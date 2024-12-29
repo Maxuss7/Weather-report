@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: weather_backend
+    ports:
+      - ${BACKEND_PORTS}
+    volumes:
+      - ./backend:${BACKEND_PATH}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # depends_on:
+    #   - db
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     container_name: weather_frontend
+#     ports:
+#       - ${FRONTEND_PORTS}
+#     volumes:
+#       - ./frontend:${FRONTEND_PATH}
+#     stdin_open: true
+#     tty: true
+
+#   db:
+#     image: postges:15
+#     container_name: weather_postgres
+#     enviroment:
+#       POSTGRES_USER: ${POSTGRES_USER}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#       POSTGRES_DB: ${POSTGRES_DB}
+#     ports:
+#       - ${DB_PORTS}
+#     volumes:
+#       - postgres_data:${POSTGRES_DATA_PATH}
+
+# volumes:
+#   postgres_data:
