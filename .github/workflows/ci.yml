@@ -19,17 +19,24 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          # POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           BACKEND_PORTS: ${{ secrets.BACKEND_PORTS }}
-          # FRONTEND_PORTS: ${{ secrets.FRONTEND_PORTS }}
-          # DB_PORTS: ${{ secrets.DB_PORTS }}
-          # BACKEND_PATH: ${{ secrets.BACKEND_PATH }}
-          # FRONTEND_PATH: ${{ secrets.FRONTEND_PATH }}
-          # POSTGRES_DATA_PATH: ${{ secrets.POSTGRES_DATA_PATH }}
-          # WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-          # DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          FRONTEND_PORTS: ${{ secrets.FRONTEND_PORTS }}
+          DB_PORTS: ${{ secrets.DB_PORTS }}
+          BACKEND_PATH: ${{ vars.BACKEND_PATH }}
+          FRONTEND_PATH: ${{ vars.FRONTEND_PATH }}
+          POSTGRES_DATA_PATH: ${{ vars.POSTGRES_DATA_PATH }}
+          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          echo "Environment variables loaded."
+          echo "POSTGRES_USER=${POSTGRES_USER}" >> .env
+          echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env
+          echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
+          echo "BACKEND_PORTS=${BACKEND_PORTS}" >> .env
+          echo "DB_PORTS=${DB_PORTS}" >> .env
+          echo "FRONTEND_PORTS=${FRONTEND_PORTS}" >> .env
+          echo "FRONTEND_PATH=${FRONTEND_PATH}" >> .env
+          echo "BACKEND_PATH=${BACKEND_PATH}" >> .env
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
@@ -37,11 +44,11 @@ jobs:
       - name: Run Docker Compose
         run: docker compose up -d --build
 
-      - name: Stop and clean up
-        run: docker compose down
-
       - name: Wait for the application to be ready
         run: |
           echo "Waiting for the app to be ready..."
           sleep 10
           curl --fail http://localhost:8000/
+
+      - name: Stop and clean up
+        run: docker compose down
