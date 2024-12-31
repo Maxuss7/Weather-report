@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+
 from src.services.weather_api import get_weather, get_forecast
 
 router = APIRouter()
