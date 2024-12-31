@@ -16,17 +16,18 @@ services:
     # depends_on:
     #   - db
 
-#   frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile
-#     container_name: weather_frontend
-#     ports:
-#       - ${FRONTEND_PORTS}
-#     volumes:
-#       - ./frontend:${FRONTEND_PATH}
-#     stdin_open: true
-#     tty: true
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: weather_frontend
+    ports:
+      - ${FRONTEND_PORTS}
+    volumes:
+      - ./frontend:${FRONTEND_PATH}
+      - /app/frontend/node_modules
+    stdin_open: true
+    tty: true
 
   # db:
   #   image: postges:15
