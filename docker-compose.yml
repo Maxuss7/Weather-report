@@ -42,6 +42,8 @@ services:
       - ${REDIS_PORTS}
     volumes:
       - ./redis_data:${REDIS_DATA_PATH}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
     networks:
       - backend_network

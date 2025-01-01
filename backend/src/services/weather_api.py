@@ -1,5 +1,6 @@
 from src.config import settings
 from src.services.HTTPClient import HTTPClient
+from src.services.redis_cache import redis_client
 from httpx import HTTPStatusError
 from fastapi import HTTPException
 
@@ -22,7 +23,11 @@ def handle_http_error(e: HTTPStatusError, default_message: str = "Unexpected err
     else:
         raise HTTPException(status_code=500, detail=default_message)
 
-weather_client = HTTPClient(base_url=settings.WEATHER_API_URL, api_key=settings.WEATHER_API_KEY)
+weather_client = HTTPClient(
+    base_url=settings.WEATHER_API_URL,
+    api_key=settings.WEATHER_API_KEY,
+    redis_client=redis_client
+)
 
 async def get_weather(city: str):
     """
