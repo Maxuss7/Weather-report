@@ -28,8 +28,7 @@ services:
     ports:
       - ${FRONTEND_PORTS}
     volumes:
-      - ./frontend:${FRONTEND_PATH}
-      - /app/frontend/node_modules
+      - ./frontend/src:/app/frontend/src
     stdin_open: true
     tty: true
     networks:
