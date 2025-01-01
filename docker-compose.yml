@@ -16,6 +16,18 @@ services:
     # depends_on:
     #   - db
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: weather_frontend
+    ports:
+      - ${FRONTEND_PORTS}
+    volumes:
+      - ./frontend:${FRONTEND_PATH}
+      - /app/frontend/node_modules
+    stdin_open: true
+    tty: true
   redis:
     image: redis:7.4.1
     container_name: redis_server
@@ -25,17 +37,6 @@ services:
       - ./redis_data:${REDIS_DATA_PATH}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
 
-#   frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile
-#     container_name: weather_frontend
-#     ports:
-#       - ${FRONTEND_PORTS}
-#     volumes:
-#       - ./frontend:${FRONTEND_PATH}
-#     stdin_open: true
-#     tty: true
 
   # db:
   #   image: postges:15
