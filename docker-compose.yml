@@ -13,6 +13,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       WEATHER_API_KEY: ${WEATHER_API_KEY}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     # depends_on:
     #   - db
 
@@ -28,6 +29,7 @@ services:
       - /app/frontend/node_modules
     stdin_open: true
     tty: true
+
   redis:
     image: redis:7.4.1
     container_name: redis_server
