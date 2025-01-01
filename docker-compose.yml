@@ -14,8 +14,11 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       WEATHER_API_KEY: ${WEATHER_API_KEY}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    # depends_on:
-    #   - db
+    depends_on:
+      - redis
+    networks:
+      - backend_network
+      - frontend_network
 
   frontend:
     build:
@@ -29,15 +32,25 @@ services:
       - /app/frontend/node_modules
     stdin_open: true
     tty: true
+    networks:
+      - frontend_network
 
   redis:
-    image: redis:7.4.1
+    image: redis:7.4.1-alpine
     container_name: redis_server
     ports:
       - ${REDIS_PORTS}
     volumes:
       - ./redis_data:${REDIS_DATA_PATH}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge
 
 
   # db:
