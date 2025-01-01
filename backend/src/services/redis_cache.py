@@ -39,12 +39,6 @@ async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600):
     Returns:
         None
     """
-    from redis.asyncio import Redis
-from src.config import settings
-import json
-import logging
-
-
 logging.basicConfig(level=logging.INFO)
 redis_client = Redis(host="redis_server", port=6379, password=settings.REDIS_PASSWORD, decode_responses=True)
 

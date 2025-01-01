@@ -1,12 +1,8 @@
 from fastapi import APIRouter, HTTPException
-
 from src.services.weather_api import get_weather, get_forecast
 
-router = APIRouter()
 
-@router.get("/test")
-def test():
-    return {"message": "test"}
+router = APIRouter()
 
 @router.get("/weather")
 async def weather(city: str):
