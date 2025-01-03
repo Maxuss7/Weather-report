@@ -1,8 +1,16 @@
 import httpx
-from src.services.redis_cache import get_from_cache, save_in_cache
+from services.redis_cache import get_from_cache, save_in_cache
+
 
 class HTTPClient:
-    def __init__(self, base_url: str, api_key: str, units: str = "metric", redis_client=None, ttl: int = 300):
+    def __init__(
+        self,
+        base_url: str,
+        api_key: str,
+        units: str = "metric",
+        redis_client=None,
+        ttl: int = 300,
+    ):
         self.base_url = base_url
         self.api_key = api_key
         self.units = units
@@ -54,9 +62,7 @@ class HTTPClient:
         Returns:
             str: A unique cache key based on the city.
         """
-        # Извлекаем параметр 'q' для города
-        city = params.get("q").lower()  
+        city = params.get("q").lower()
         req_type = endpoint.split("?")[0]
 
         return f"{req_type}:{city}"
-
