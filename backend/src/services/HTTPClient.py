@@ -1,5 +1,5 @@
 import httpx
-from src.services.redis_cache import get_from_cache, save_in_cache
+from services.redis_cache import get_from_cache, save_in_cache
 
 
 class HTTPClient:
@@ -62,7 +62,6 @@ class HTTPClient:
         Returns:
             str: A unique cache key based on the city.
         """
-        # Извлекаем параметр 'q' для города
         city = params.get("q").lower()
         req_type = endpoint.split("?")[0]
 

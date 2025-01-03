@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.routers.weather_endpoints import router as weather_router
+from routers.weather_endpoints import router as weather_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(

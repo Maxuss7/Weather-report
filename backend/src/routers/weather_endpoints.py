@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Query
-from src.services.weather_api import get_weather, get_forecast
+from services.weather_api import get_weather, get_forecast
 
 router = APIRouter()
 
@@ -10,10 +10,9 @@ city_query = Query(
     description="Name of the city to get weather for",
 )
 
+
 @router.get("/weather")
-async def weather(
-    city: Annotated[str, city_query]
-):
+async def weather(city: Annotated[str, city_query]):
     try:
         return await get_weather(city)
     except ValueError as e:
@@ -21,9 +20,7 @@ async def weather(
 
 
 @router.get("/forecast")
-async def forecast(
-    city: Annotated[str, city_query]
-):
+async def forecast(city: Annotated[str, city_query]):
     try:
         return await get_forecast(city)
     except ValueError as e:

@@ -1,5 +1,5 @@
 from redis.asyncio import Redis
-from src.config import settings
+from config import settings
 import json
 import logging
 
