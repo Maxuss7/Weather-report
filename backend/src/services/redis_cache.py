@@ -5,7 +5,13 @@ import logging
 
 
 logging.basicConfig(level=logging.INFO)
-redis_client = Redis(host="redis_server", port=6379, password=settings.REDIS_PASSWORD, decode_responses=True)
+redis_client = Redis(
+    host="redis_server",
+    port=6379,
+    password=settings.REDIS_PASSWORD,
+    decode_responses=True,
+)
+
 
 async def get_from_cache(redis: Redis, key: str):
     """
@@ -25,6 +31,7 @@ async def get_from_cache(redis: Redis, key: str):
         return json.loads(cached_data)
     logging.info(f"Cache miss for key: {key}")
     return None
+
 
 async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600):
     """
@@ -39,8 +46,16 @@ async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600):
     Returns:
         None
     """
+
+
 logging.basicConfig(level=logging.INFO)
-redis_client = Redis(host="redis_server", port=6379, password=settings.REDIS_PASSWORD, decode_responses=True)
+redis_client = Redis(
+    host="redis_server",
+    port=6379,
+    password=settings.REDIS_PASSWORD,
+    decode_responses=True,
+)
+
 
 async def get_from_cache(redis: Redis, key: str):
     """
@@ -60,6 +75,7 @@ async def get_from_cache(redis: Redis, key: str):
         return json.loads(cached_data)
     logging.info(f"Cache miss for key: {key}")
     return None
+
 
 async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600):
     """
