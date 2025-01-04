@@ -14,8 +14,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       WEATHER_API_KEY: ${WEATHER_API_KEY}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    depends_on:
-      - redis
     networks:
       - backend_network
       - frontend_network
@@ -40,8 +38,8 @@ services:
     container_name: redis_server
     ports:
       - ${REDIS_PORTS}
-    volumes:
-      - ./redis_data:${REDIS_DATA_PATH}
+    # volumes:
+    #   - ./redis_data:${REDIS_DATA_PATH}
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
@@ -66,7 +64,3 @@ networks:
   #     - ${DB_PORTS}
   #   volumes:
   #     - postgres_data:${POSTGRES_DATA_PATH}
-
-volumes:
-  postgres_data:
-  redis_data:

@@ -9,8 +9,8 @@ on:
       - develop
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,46 +28,45 @@ jobs:
           echo "BACKEND_PATH=${{ vars.BACKEND_PATH }}" >> .env
           echo "FRONTEND_PORTS=${{ secrets.FRONTEND_PORTS }}" >> .env
           echo "FRONTEND_PATH=${{ vars.FRONTEND_PATH }}" >> .env
+          echo "WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}" >> .env
 
-  build:
-    needs: setup
-    runs-on: ubuntu-24.04
-    steps:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
-
-      - name: List all files and directories
-        run: ls -R
-        
-      - name: Verify docker-compose.yml exists
-        run: |
-          if [ ! -f docker-compose.yml ]; then
-            echo "docker-compose.yml not found in $(pwd)"
-            exit 1
-          fi
 
       - name: Run Docker Compose
         run: docker compose up -d --build
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for the application to be ready
-        run: |
-          echo "Waiting for the app to be ready..."
-          sleep 10
-          curl --fail http://localhost:8000/
+      - name: Sleep for services to initialize
+        run: sleep 10
 
-      - name: Run tests
-        run: |
-          curl --fail http://localhost:8000/api/weather?city=Moscow
-          curl --fail http://localhost:8000/api/weather?city=Moscow
-          docker logs $(docker ps -q -f "name=backend") 2>&1 | grep -i error && exit 1 || echo "No errors found in Uvicorn logs."
+      - name: Check frontend logs
+        run: docker logs $(docker ps -q -f "name=weather_frontend")
+        
+      - name: Check backend logs
+        run: docker logs $(docker ps -q -f "name=weather_backend")
 
-  cleanup:
-    needs: [test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Stop and clean up
-        run: docker compose down
+      - name: Check redis logs
+        run: docker logs $(docker ps -q -f "name=redis_server")
+
+      - name: Verify Frontend
+        run: |
+          echo "Verifying Frontend (Vite)..."
+          curl -X 'GET' --fail http://localhost:5173/
+          docker logs $(docker ps -q -f "name=weather_frontend") 2>&1 | grep -i error && exit 1 || echo "No errors found in Frontend Vite: 5173."
+
+      - name: Verify API responses and check logs
+        run: |
+          echo "Verifying Backend API..."
+          curl -X 'GET' --fail http://localhost:8000/api/weather?city=Moscow
+          curl -X 'GET' --fail http://localhost:8000/api/weather?city=Moscow
+          curl -X 'GET' --fail http://localhost:8000/api/forecast?city=London
+          curl -X 'GET' --fail http://localhost:8000/api/forecast?city=London
+          docker logs $(docker ps -q -f "name=weather_backend") 2>&1 | grep -i error && exit 1 || echo "No errors found in Uvicorn logs."
+
+      - name: Verify Redis
+        run: |
+          echo "Checking Redis connection..."
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD PING
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD KEYS *
+          docker logs $(docker ps -q -f "name=redis_server") 2>&1 | grep -i error && exit 1 || echo "No errors found in Redis server."
+
