@@ -1,14 +1,11 @@
-import "./App.css";
 import WeatherContextProvider from "./Context/WeatherProvider";
-import Intro from "./Components/Intro/Intro";
-import CurrentCityWeather from "./Components/CurrentCityWeather/CurrentCityWeather";
+import AppLayot from "./Components/Layout/AppLayout";
 
 function App() {
     return (
         <>
             <WeatherContextProvider>
-                <Intro />
-                <CurrentCityWeather />
+                <AppLayot />
             </WeatherContextProvider>
         </>
     );
