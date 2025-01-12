@@ -1,9 +1,10 @@
 const headerStyle = {
+    height: "3rem",
     display: "flex",
     frexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
     backgroundColor: "#757da5",
-    padding: "1rem 0",
 };
 
 export default function AppHeader() {
