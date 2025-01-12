@@ -1,23 +1,34 @@
+import { useWeather } from "../../Context/WeatherProvider";
 
-function CurrentCityWeather(){
+const currentCityWeatherStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+};
 
-    fetch('http://localhost:8000/api/weather?city=Moscow')
-        .then(resp => {
-            console.log(resp.json())
-            console.log(1)
-        })
-        .catch(err => {
-            console.log(err)
-            console.log(2)
-        })
+function CurrentCityWeather() {
+    const { weather, forecast, loading, locationError } = useWeather();
+    console.log(weather);
 
-
-
-    return(
+    return (
         <>
-            <p>ffffff</p>
+            {weather.name && (
+                <section style={currentCityWeatherStyle}>
+                    <p>{weather.name}</p>
+                    <div>
+                        <h1>{weather.main.temp.toFixed(0)}℃</h1>
+                    </div>
+                    <div>
+                        <h2>
+                            {weather.main.temp_min.toFixed(0)}℃ /{" "}
+                            {weather.main.temp_max.toFixed(0)}℃
+                        </h2>
+                    </div>
+                </section>
+            )}
         </>
-    )
+    );
 }
 
 export default CurrentCityWeather;
