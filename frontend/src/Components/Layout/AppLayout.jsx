@@ -7,15 +7,17 @@ export default function AppLayot() {
 
     if (loading) {
         return (
-            <div
+            <p
                 style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
+                    fontSize: "50px",
+                    fontWeight: "700",
+                    // position: "absolute",
+                    // top: "50%",
+                    // left: "50%",
                 }}
             >
                 Loading...
-            </div>
+            </p>
         );
     }
 
