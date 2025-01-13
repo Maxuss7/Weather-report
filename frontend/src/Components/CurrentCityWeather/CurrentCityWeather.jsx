@@ -15,15 +15,30 @@ function CurrentCityWeather() {
         <>
             {weather.name && (
                 <section style={currentCityWeatherStyle}>
-                    <p>{weather.name}</p>
+                    <h1 style={{ fontWeight: 700, fontSize: "32px" }}>
+                        {weather.name}
+                    </h1>
                     <div>
-                        <h1>{weather.main.temp.toFixed(0)}℃</h1>
+                        <p>
+                            <span style={{ fontWeight: 700, fontSize: "36px" }}>
+                                {weather.main.temp.toFixed(0) == "-0"
+                                    ? "0"
+                                    : weather.main.temp.toFixed(0)}
+                            </span>
+                            <sup style={{ fontSize: "28px" }}>℃</sup>
+                        </p>
                     </div>
                     <div>
-                        <h2>
-                            {weather.main.temp_min.toFixed(0)}℃ /{" "}
-                            {weather.main.temp_max.toFixed(0)}℃
-                        </h2>
+                        <p style={{ fontSize: "28px" }}>
+                            {weather.main.temp_min.toFixed(0) == "-0"
+                                ? "0"
+                                : weather.main.temp_min.toFixed(0)}
+                            ° /{" "}
+                            {weather.main.temp_max.toFixed(0) == "-0"
+                                ? "0"
+                                : weather.main.temp_max.toFixed(0)}
+                            °
+                        </p>
                     </div>
                 </section>
             )}
