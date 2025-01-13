@@ -9,9 +9,15 @@ export default function AppLayot() {
         return (
             <div
                 style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
+                    color: "rgb(117, 125, 165)",
+                    backgroundColor: "rgb(131, 144, 211)",
+                    height: "100vh",
+                    weight: "100wh",
+                    fontSize: "50px",
+                    fontWeight: "700",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
                 Loading...

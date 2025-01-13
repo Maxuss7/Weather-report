@@ -17,8 +17,8 @@ export default function AppHeader() {
                     id="location"
                     name="location"
                     required
-                    minlength="2"
-                    maxlength="16"
+                    minLength="2"
+                    maxLength="16"
                     size="10"
                     placeholder="location"
                 />

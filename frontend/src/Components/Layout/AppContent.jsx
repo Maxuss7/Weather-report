@@ -1,8 +1,10 @@
-import CurrentCityWeather from "../CurrentCityWeather/CurrentCityWeather";
+import CurrentCityWeather from "../CurrentCityWeather";
+import CurrentCityForecast from "../CurrentCityForecastForDay";
 
 const appContentStyle = {
     backgroundColor: "rgb(131 144 211)",
     height: "calc(100vh - 3rem)",
+    padding: "0 4rem",
 };
 
 export default function AppContent() {
@@ -10,6 +12,7 @@ export default function AppContent() {
         <>
             <main style={appContentStyle}>
                 <CurrentCityWeather />
+                <CurrentCityForecast />
             </main>
         </>
     );
