@@ -1,4 +1,5 @@
 import CurrentCityWeather from "../CurrentCityWeather";
+import CurrentCityForecast from "../CurrentCityForecastForDay";
 
 const appContentStyle = {
     backgroundColor: "rgb(131 144 211)",
@@ -10,6 +11,7 @@ export default function AppContent() {
         <>
             <main style={appContentStyle}>
                 <CurrentCityWeather />
+                <CurrentCityForecast />
             </main>
         </>
     );
