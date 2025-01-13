@@ -7,17 +7,21 @@ export default function AppLayot() {
 
     if (loading) {
         return (
-            <p
+            <div
                 style={{
+                    color: "rgb(117, 125, 165)",
+                    backgroundColor: "rgb(131, 144, 211)",
+                    height: "100vh",
+                    weight: "100wh",
                     fontSize: "50px",
                     fontWeight: "700",
-                    // position: "absolute",
-                    // top: "50%",
-                    // left: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
                 Loading...
-            </p>
+            </div>
         );
     }
 
