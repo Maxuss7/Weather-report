@@ -1,4 +1,4 @@
-import CurrentCityWeather from "../CurrentCityWeather/CurrentCityWeather";
+import CurrentCityWeather from "../CurrentCityWeather";
 
 const appContentStyle = {
     backgroundColor: "rgb(131 144 211)",

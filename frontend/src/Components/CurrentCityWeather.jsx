@@ -1,4 +1,4 @@
-import { useWeather } from "../../Context/WeatherProvider";
+import { useWeather } from "../Context/WeatherProvider";
 
 const currentCityWeatherStyle = {
     display: "flex",
@@ -8,8 +8,11 @@ const currentCityWeatherStyle = {
 };
 
 function CurrentCityWeather() {
-    const { weather, forecast, loading, locationError } = useWeather();
-    console.log(weather);
+    const { weather, locationError } = useWeather();
+
+    if (locationError != "") {
+        alert(locationError);
+    }
 
     return (
         <>
