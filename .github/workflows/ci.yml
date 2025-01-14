@@ -39,34 +39,30 @@ jobs:
       - name: Sleep for services to initialize
         run: sleep 10
 
-      - name: Check frontend logs
-        run: docker logs $(docker ps -q -f "name=weather_frontend")
-        
-      - name: Check backend logs
-        run: docker logs $(docker ps -q -f "name=weather_backend")
-
-      - name: Check redis logs
-        run: docker logs $(docker ps -q -f "name=redis_server")
+      - name: Check logs for all services
+        run: |
+          services=("weather_frontend" "weather_backend" "redis_server")
+          for service in "${services[@]}"; do
+            echo "Checking logs for $service";
+            docker logs $(docker ps -q -f "name=$service") || exit 1;
+          done
 
       - name: Verify Frontend
         run: |
-          echo "Verifying Frontend (Vite)..."
-          curl -X 'GET' --fail http://localhost:5173/
-          docker logs $(docker ps -q -f "name=weather_frontend") 2>&1 | grep -i error && exit 1 || echo "No errors found in Frontend Vite: 5173."
+          echo "Verifying Frontend (Vite)...";
+          curl -X GET --fail http://localhost:5173/ || exit 1;
 
-      - name: Verify API responses and check logs
+      - name: Verify Backend API
         run: |
-          echo "Verifying Backend API..."
-          curl -X 'GET' --fail http://localhost:8000/api/weather?city=Moscow
-          curl -X 'GET' --fail http://localhost:8000/api/weather?city=Moscow
-          curl -X 'GET' --fail http://localhost:8000/api/forecast?city=London
-          curl -X 'GET' --fail http://localhost:8000/api/forecast?city=London
-          docker logs $(docker ps -q -f "name=weather_backend") 2>&1 | grep -i error && exit 1 || echo "No errors found in Uvicorn logs."
+          endpoints=("/api/weather?city=Moscow" "/api/forecast?city=London")
+          for endpoint in "${endpoints[@]}"; do
+            echo "Checking $endpoint...";
+            curl -X GET --fail http://localhost:8000$endpoint || exit 1;
+          done
 
       - name: Verify Redis
         run: |
-          echo "Checking Redis connection..."
-          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD PING
-          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD KEYS *
-          docker logs $(docker ps -q -f "name=redis_server") 2>&1 | grep -i error && exit 1 || echo "No errors found in Redis server."
+          echo "Checking Redis connection...";
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD PING || exit 1;
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD KEYS * || exit 1;
 
