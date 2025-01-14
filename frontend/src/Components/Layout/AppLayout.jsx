@@ -1,5 +1,6 @@
 import AppHeader from "./AppHeader";
 import AppContent from "./AppContent";
+import AppFooter from "./AppFooter";
 import { useWeather } from "../../Context/WeatherProvider";
 
 export default function AppLayot() {
@@ -29,6 +30,7 @@ export default function AppLayot() {
         <>
             <AppHeader />
             <AppContent />
+            <AppFooter />
         </>
     );
 }
