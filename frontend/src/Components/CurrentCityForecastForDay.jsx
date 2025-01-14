@@ -23,6 +23,7 @@ const currentCityForecastForDayStyle = {
     padding: "0 20px",
     margin: "0 20px",
     overflowX: "auto",
+    boxShadow: "0px 0px 30px 8px rgba(0, 0, 0, 0.3)",
 };
 
 const dayItemStyle = {
@@ -36,8 +37,35 @@ const dayItemStyle = {
     flexDirection: "column",
     textAlign: "center",
     justifyContent: "space-between",
-    marginRight: "20px",
+    marginRight: "10px",
+    marginLeft: "10px",
 };
+
+function chooseIcon(weather) {
+    switch (weather) {
+        case "Clouds":
+            return (
+                <img
+                    style={{ maxWidth: "40px" }}
+                    src="..\..\public\img\clouds.png"
+                    alt="clouds"
+                />
+            );
+
+            break;
+
+        case "Snow":
+            return (
+                <img
+                    style={{ maxWidth: "40px" }}
+                    src="..\..\public\img\snow.png"
+                    alt="clouds"
+                />
+            );
+
+            break;
+    }
+}
 
 export default function CurrentCityForecast() {
     const { forecast } = useWeather();
@@ -49,7 +77,7 @@ export default function CurrentCityForecast() {
                     return (
                         <div style={dayItemStyle} key={day.dt}>
                             <div>{day.main.temp.toFixed(0)}°</div>
-                            <div>{day.weather[0].main}</div>
+                            <div>{chooseIcon(day.weather[0].main)}</div>
                             <div>{day.wind.speed} m/s</div>
                             <div>
                                 {new Date(day.dt * 1000)
