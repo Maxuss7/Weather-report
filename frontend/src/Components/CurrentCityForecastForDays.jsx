@@ -1,4 +1,5 @@
 import { useWeather } from "../Context/WeatherProvider";
+import WeatherIcon from "./WeatherIcon";
 
 // {forecast.list.forEach((element) => {
 //     console.log(
@@ -37,32 +38,6 @@ const daysItemStyle = {
     marginLeft: "10px",
 };
 
-function chooseIcon(weather) {
-    switch (weather) {
-        case "Clouds":
-            return (
-                <img
-                    style={{ maxWidth: "40px" }}
-                    src="..\..\public\img\clouds.png"
-                    alt="clouds"
-                />
-            );
-
-            break;
-
-        case "Snow":
-            return (
-                <img
-                    style={{ maxWidth: "40px" }}
-                    src="..\..\public\img\snow.png"
-                    alt="clouds"
-                />
-            );
-
-            break;
-    }
-}
-
 function getWeekDay(date) {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     return days[[6, 0, 1, 2, 3, 4, 5][date.getDay()]];
@@ -97,7 +72,11 @@ export default function CurrentCityForecastForDays() {
                                     : day.main.temp.toFixed(0)}
                                 °
                             </div>
-                            <div>{chooseIcon(day.weather[0].main)}</div>
+                            <div>
+                                <WeatherIcon
+                                    weather={day.weather[0].main.toLowerCase()}
+                                />
+                            </div>
                             <div>{day.wind.speed} m/s</div>
                         </div>
                     ))}
