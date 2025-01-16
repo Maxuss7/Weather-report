@@ -1,13 +1,6 @@
 import { useWeather } from "../Context/WeatherProvider";
 import WeatherIcon from "./WeatherIcon";
-
-// {forecast.list.forEach((element) => {
-//     console.log(
-//         new Date(element.dt * 1000)
-//             .toLocaleTimeString()
-//             .slice(0, 5)
-//     );
-// })}
+import { validTemp, validTime, getWeekDay, getMiddleDay } from "../utils";
 
 const currentCityForecastForDaysStyle = {
     display: "flex",
@@ -38,18 +31,6 @@ const daysItemStyle = {
     marginLeft: "10px",
 };
 
-function getWeekDay(date) {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    return days[[6, 0, 1, 2, 3, 4, 5][date.getDay()]];
-}
-
-function getMiddleDay(days) {
-    return days.filter(
-        (day) =>
-            new Date(day.dt * 1000).toLocaleTimeString().slice(0, 5) == "12:00"
-    );
-}
-
 export default function CurrentCityForecastForDays() {
     const { forecast } = useWeather();
 
@@ -62,16 +43,9 @@ export default function CurrentCityForecastForDays() {
                         <div style={daysItemStyle} key={day.dt}>
                             <div>
                                 {getWeekDay(new Date(day.dt * 1000))}{" "}
-                                {new Date(day.dt * 1000)
-                                    .toLocaleDateString()
-                                    .slice(0, 5)}
+                                {validTime(day.dt, true)}
                             </div>
-                            <div>
-                                {day.main.temp.toFixed(0) == "-0"
-                                    ? "0"
-                                    : day.main.temp.toFixed(0)}
-                                °
-                            </div>
+                            <div>{validTemp(day.main.temp)}°</div>
                             <div>
                                 <WeatherIcon
                                     weather={day.weather[0].main.toLowerCase()}

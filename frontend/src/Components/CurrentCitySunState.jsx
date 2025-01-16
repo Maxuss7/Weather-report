@@ -1,5 +1,5 @@
 import { useWeather } from "../Context/WeatherProvider";
-
+import { validTime } from "../utils";
 const sunStateStyle = {
     display: "flex",
     flexDiraction: "row",
@@ -61,11 +61,7 @@ export default function CurrentCitySunState() {
                 <section style={sunStateStyle}>
                     <div style={sunStateItemStyle}>
                         <p>Sunrise</p>
-                        <p>
-                            {new Date(weather.sys.sunrise * 1000)
-                                .toLocaleTimeString()
-                                .slice(0, 5)}
-                        </p>
+                        <p>{validTime(weather.sys.sunrise, false)}</p>
                         <img
                             src="../../public/img/sunrise.png"
                             alt="sun"
@@ -75,11 +71,7 @@ export default function CurrentCitySunState() {
                     </div>
                     <div style={sunStateItemStyle}>
                         <p>Sunset</p>
-                        <p>
-                            {new Date(weather.sys.sunset * 1000)
-                                .toLocaleTimeString()
-                                .slice(0, 5)}
-                        </p>
+                        <p>{validTime(weather.sys.sunset, false)}</p>
                         <img
                             src="../../public/img/sunset.png"
                             alt="sun"

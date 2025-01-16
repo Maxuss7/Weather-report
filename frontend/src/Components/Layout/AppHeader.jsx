@@ -1,3 +1,5 @@
+import SearchLocation from "../SearchLocation";
+
 const headerStyle = {
     height: "3rem",
     display: "flex",
@@ -12,17 +14,7 @@ export default function AppHeader() {
         <header style={headerStyle}>
             <div>Weather App</div>
             <div>
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    required
-                    minLength="2"
-                    maxLength="16"
-                    size="10"
-                    placeholder="location"
-                />
-                <input type="button" value="search" />
+                <SearchLocation />
             </div>
         </header>
     );

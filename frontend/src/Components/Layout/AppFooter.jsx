@@ -1,4 +1,5 @@
 import CurrentCitySunState from "../CurrentCitySunState";
+
 const footerStyle = {
     height: "240px",
     backgroundColor: "rgb(117, 125, 165)",

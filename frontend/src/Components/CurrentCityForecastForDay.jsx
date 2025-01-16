@@ -1,4 +1,5 @@
 import { useWeather } from "../Context/WeatherProvider";
+import { validTemp, validTime } from "../utils.js";
 import WeatherIcon from "./WeatherIcon";
 
 const currentCityForecastForDayStyle = {
@@ -40,29 +41,14 @@ export default function CurrentCityForecast() {
                     forecast.list.slice(0, 9).map((day) => {
                         return (
                             <div style={dayItemStyle} key={day.dt}>
-                                <div>
-                                    {day.main.temp.toFixed(0) == "-0"
-                                        ? "0"
-                                        : day.main.temp.toFixed(0)}
-                                    °
-                                </div>
+                                <div>{validTemp(day.main.temp)}°</div>
                                 <div>
                                     <WeatherIcon
                                         weather={day.weather[0].main.toLowerCase()}
                                     />
                                 </div>
                                 <div>{day.wind.speed} m/s</div>
-                                <div>
-                                    {new Date(day.dt * 1000)
-                                        .toLocaleTimeString()
-                                        .slice(0, 5) === "00:00"
-                                        ? new Date(day.dt * 1000)
-                                              .toLocaleDateString()
-                                              .slice(0, 5)
-                                        : new Date(day.dt * 1000)
-                                              .toLocaleTimeString()
-                                              .slice(0, 5)}
-                                </div>
+                                <div>{validTime(day.dt, false)}</div>
                             </div>
                         );
                     })}
