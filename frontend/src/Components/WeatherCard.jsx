@@ -14,6 +14,7 @@ const dayItemStyle = {
     justifyContent: "space-between",
     marginRight: "10px",
     marginLeft: "10px",
+    flexShrink: "0",
 };
 
 function WeatherCard({ day, isDay }) {
