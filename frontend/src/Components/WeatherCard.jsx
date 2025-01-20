@@ -12,8 +12,6 @@ const dayItemStyle = {
     flexDirection: "column",
     textAlign: "center",
     justifyContent: "space-between",
-    marginRight: "10px",
-    marginLeft: "10px",
     flexShrink: "0",
 };
 

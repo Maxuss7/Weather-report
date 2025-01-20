@@ -11,8 +11,114 @@ body {
     -moz-osx-font-smoothing: grayscale;
 
     color: white;
+    background-color: rgb(131 144 211);
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
+}
+
+/* Extra small (xs) – дефолтные стили для всех экранов (не требуют медиа-запросов) */
+/* дефолтные стили */
+
+main {
+    padding: 0 10px;
+}
+
+.sunFlex {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.sunFlex > div {
+    background-color: rgb(131, 144, 211);
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    z-index: 0;
+}
+
+.sun {
+    max-width: 200px;
+}
+
+/* Small (sm) – устройства от 576px */
+@media (min-width: 576px) {
+    main {
+        padding: 0 20px;
+    }
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sunFlex > div {
+        margin: 1rem;
+    }
+
+    .sun {
+        max-width: 200px;
+    }
+}
+
+/* Medium (md) – устройства от 768px */
+@media (min-width: 768px) {
+    main {
+        padding: 0 50px;
+    }
+
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sun {
+        max-width: 250px;
+    }
+}
+
+/* Large (lg) – устройства от 992px */
+@media (min-width: 992px) {
+    main {
+        padding: 0 100px;
+    }
+
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sun {
+        max-width: 250px;
+    }
+}
+
+/* Extra large (xl) – устройства от 1200px */
+@media (min-width: 1200px) {
+    main {
+        padding: 0 200px;
+    }
+
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sun {
+        max-width: 250px;
+    }
+}
+
+/* Extra extra large (xxl) – устройства от 1400px */
+@media (min-width: 1400px) {
+    main {
+        padding: 0 300px;
+    }
+
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sun {
+        max-width: 250px;
+    }
 }
