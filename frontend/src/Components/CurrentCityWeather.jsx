@@ -1,4 +1,5 @@
 import { useWeather } from "../Context/WeatherProvider";
+import { validTemp } from "../utils";
 
 const currentCityWeatherStyle = {
     display: "flex",
@@ -30,9 +31,7 @@ function CurrentCityWeather() {
                     <div>
                         <p style={{ marginBottom: 0 }}>
                             <span style={{ fontWeight: 700, fontSize: "54px" }}>
-                                {weather.main.temp.toFixed(0) == "-0"
-                                    ? "0"
-                                    : weather.main.temp.toFixed(0)}
+                                {validTemp(weather.main.temp)}
                             </span>
                             <sup style={{ fontSize: "40px" }}>℃</sup>
                         </p>
@@ -42,14 +41,8 @@ function CurrentCityWeather() {
                             {weather.weather[0].description}
                         </p>
                         <p style={{ marginTop: 0 }}>
-                            {weather.main.temp_min.toFixed(0) == "-0"
-                                ? "0"
-                                : weather.main.temp_min.toFixed(0)}
-                            ° /{" "}
-                            {weather.main.temp_max.toFixed(0) == "-0"
-                                ? "0"
-                                : weather.main.temp_max.toFixed(0)}
-                            °
+                            {validTemp(weather.main.temp_min)}° /{" "}
+                            {validTemp(weather.main.temp_max)}°
                         </p>
                     </div>
                 </section>

@@ -1,56 +1,20 @@
 import { useWeather } from "../Context/WeatherProvider";
+import { validTime } from "../utils";
 
-const sunStateStyle = {
-    display: "flex",
-    flexDiraction: "row",
-    padding: "1rem",
-};
-
-const sunStateItemStyle = {
-    backgroundColor: "rgb(131, 144, 211)",
-    borderRadius: "10px",
-    textAlign: "center",
-    width: "100%",
-    height: "200px",
-    margin: "0 1rem",
-    position: "relative",
-    zIndex: "0",
-};
-
-const sunriseStyle = {
-    position: "absolute",
-    maxWidth: "250px",
-    bottom: "0",
-    left: "50%",
-    transform: "translate(-50%, 0)",
-    zIndex: "-1",
-};
-
-const sunsetStyle = {
-    position: "absolute",
-    maxWidth: "250px",
-    bottom: "0",
-    left: "50%",
-    transform: "translate(-50%, 0)",
-    zIndex: "-1",
-};
-
-const shadowriseStyle = {
+const sunStyle = {
     position: "absolute",
     bottom: "0",
     left: "50%",
     transform: "translate(-50%, 0)",
     zIndex: "-1",
-    boxShadow: "0px -60px 100px 100px rgba(236, 255, 0, 0.5)",
 };
 
-const shadowsetStyle = {
+const shadowStyle = {
     position: "absolute",
     bottom: "0",
     left: "50%",
     transform: "translate(-50%, 0)",
     zIndex: "-1",
-    boxShadow: "0px -60px 100px 100px rgba(255, 150, 0, 0.5)",
 };
 
 export default function CurrentCitySunState() {
@@ -58,34 +22,40 @@ export default function CurrentCitySunState() {
     return (
         <>
             {weather.sys && (
-                <section style={sunStateStyle}>
-                    <div style={sunStateItemStyle}>
+                <section className="sunFlex">
+                    <div>
                         <p>Sunrise</p>
-                        <p>
-                            {new Date(weather.sys.sunrise * 1000)
-                                .toLocaleTimeString()
-                                .slice(0, 5)}
-                        </p>
+                        <p>{validTime(weather.sys.sunrise, false)}</p>
                         <img
-                            src="../../public/img/sunrise.png"
+                            className="sun"
+                            src="../../img/sunrise.png"
                             alt="sun"
-                            style={sunriseStyle}
+                            style={sunStyle}
                         ></img>
-                        <div style={shadowriseStyle}></div>
+                        <div
+                            style={{
+                                ...shadowStyle,
+                                boxShadow:
+                                    "0px -60px 100px 70px rgba(236, 255, 0, 0.5)",
+                            }}
+                        ></div>
                     </div>
-                    <div style={sunStateItemStyle}>
+                    <div>
                         <p>Sunset</p>
-                        <p>
-                            {new Date(weather.sys.sunset * 1000)
-                                .toLocaleTimeString()
-                                .slice(0, 5)}
-                        </p>
+                        <p>{validTime(weather.sys.sunset, false)}</p>
                         <img
-                            src="../../public/img/sunset.png"
+                            className="sun"
+                            src="../../img/sunset.png"
                             alt="sun"
-                            style={sunsetStyle}
+                            style={sunStyle}
                         ></img>
-                        <div style={shadowsetStyle}></div>
+                        <div
+                            style={{
+                                ...shadowStyle,
+                                boxShadow:
+                                    "0px -60px 100px 70px rgba(255, 150, 0, 0.5)",
+                            }}
+                        ></div>
                     </div>
                 </section>
             )}
