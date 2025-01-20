@@ -5,6 +5,7 @@ const WeatherContext = createContext({
     forecast: {},
     loading: false,
     locationError: "",
+    getWeather: () => {},
 });
 
 export default function WeatherContextProvider({ children }) {
@@ -18,8 +19,7 @@ export default function WeatherContextProvider({ children }) {
 
     const [city, setCity] = useState("");
 
-    // Получаем координаты
-    useEffect(() => {
+    function getCoords() {
         setLoading(true);
 
         if (!navigator.geolocation) {
@@ -56,10 +56,9 @@ export default function WeatherContextProvider({ children }) {
                 }
             }
         );
-    }, []);
+    }
 
-    // Получаем город по координатам
-    useEffect(() => {
+    function getCity() {
         if (latitude && longitude) {
             fetch(
                 `https://geocode-maps.yandex.ru/1.x/?apikey=${
@@ -77,11 +76,11 @@ export default function WeatherContextProvider({ children }) {
                     console.error("Ошибка при выполнении запроса:", error);
                 });
         }
-    }, [latitude, longitude]);
+    }
 
-    // Получаем данные о погоде
-    useEffect(() => {
+    function getWeather(city) {
         if (city) {
+            setLoading(true);
             Promise.all([
                 fetch(`http://localhost:8000/api/weather?city=${city}`).then(
                     (resp) => resp.json()
@@ -91,6 +90,10 @@ export default function WeatherContextProvider({ children }) {
                 ),
             ])
                 .then(([weatherData, forecastData]) => {
+                    if (weatherData.detail === "City not found.") {
+                        alert("Локация не найдена");
+                        throw new Error("Не удалось получить данные о погоде.");
+                    }
                     setWeather(weatherData);
                     setForecast(forecastData);
                 })
@@ -104,11 +107,26 @@ export default function WeatherContextProvider({ children }) {
                     setLoading(false);
                 });
         }
+    }
+
+    // Получаем координаты
+    useEffect(() => {
+        getCoords();
+    }, []);
+
+    // Получаем город по координатам
+    useEffect(() => {
+        getCity();
+    }, [latitude, longitude]);
+
+    // Получаем данные о погоде
+    useEffect(() => {
+        getWeather(city);
     }, [city]);
 
     return (
         <WeatherContext.Provider
-            value={{ weather, forecast, loading, locationError }}
+            value={{ weather, forecast, loading, locationError, getWeather }}
         >
             {children}
         </WeatherContext.Provider>

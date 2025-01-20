@@ -22,7 +22,7 @@ body {
 /* дефолтные стили */
 
 main {
-    margin-top: 3rem;
+    margin-top: 4rem;
     padding: 0 10px;
 }
 
@@ -47,7 +47,7 @@ main {
 }
 
 .carousel {
-    grid-auto-columns: calc((100% / 1) - 12px);
+    grid-auto-columns: calc((100% / 2) - 12px);
 }
 
 /* Small (sm) – устройства от 576px */

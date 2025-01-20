@@ -36,27 +36,10 @@ const buttonStyle = {
 
 function WeatherCardCarousel({ list, isDay }) {
     const [index, setIndex] = useState(0);
-    const [width, setWidth] = useState(0);
-    const [maxIndex, setMaxIndex] = useState(0);
     const carouselRef = useRef(null);
 
     useLayoutEffect(() => {
         if (!carouselRef.current) return;
-
-        setWidth(carouselRef.current.clientWidth);
-        setMaxIndex(
-            carouselRef.current.clientWidth /
-                carouselRef.current.children[0].clientWidth
-        );
-
-        console.log(
-            carouselRef.current.children.length -
-                (
-                    carouselRef.current.clientWidth /
-                    carouselRef.current.children[0].clientWidth
-                ).toFixed(0) +
-                3
-        );
 
         const cardWidth = carouselRef.current.children[0].clientWidth;
         carouselRef.current.style.transform = `translateX(${
@@ -77,7 +60,7 @@ function WeatherCardCarousel({ list, isDay }) {
                         carouselRef.current.clientWidth /
                         carouselRef.current.children[0].clientWidth
                     ).toFixed(0) +
-                    3
+                    2
             )
         );
     }
@@ -90,13 +73,13 @@ function WeatherCardCarousel({ list, isDay }) {
                 ))}
             </div>
             <button
-                style={{ ...buttonStyle, left: "10px" }}
+                style={{ ...buttonStyle, left: "5px" }}
                 onClick={leftButtonHandler}
             >
                 {"<"}
             </button>
             <button
-                style={{ ...buttonStyle, right: "10px" }}
+                style={{ ...buttonStyle, right: "5px" }}
                 onClick={rightButtonHandler}
             >
                 {">"}

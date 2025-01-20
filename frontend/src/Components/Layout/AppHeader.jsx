@@ -1,7 +1,7 @@
 import SearchLocation from "../SearchLocation";
 
 const headerStyle = {
-    height: "3rem",
+    height: "4rem",
     display: "flex",
     frexDirection: "row",
     justifyContent: "space-around",
@@ -17,7 +17,7 @@ const headerStyle = {
 export default function AppHeader() {
     return (
         <header style={headerStyle}>
-            <div>Weather App</div>
+            <div style={{ fontSize: "2rem" }}>Weather App</div>
             <div>
                 <SearchLocation />
             </div>
