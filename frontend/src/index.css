@@ -22,6 +22,7 @@ body {
 /* дефолтные стили */
 
 main {
+    margin-top: 3rem;
     padding: 0 10px;
 }
 
@@ -45,6 +46,10 @@ main {
     max-width: 200px;
 }
 
+.carousel {
+    grid-auto-columns: calc((100% / 1) - 12px);
+}
+
 /* Small (sm) – устройства от 576px */
 @media (min-width: 576px) {
     main {
@@ -61,6 +66,10 @@ main {
     .sun {
         max-width: 200px;
     }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 3) - 12px);
+    }
 }
 
 /* Medium (md) – устройства от 768px */
@@ -75,6 +84,10 @@ main {
 
     .sun {
         max-width: 250px;
+    }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 4) - 12px);
     }
 }
 
@@ -91,6 +104,10 @@ main {
     .sun {
         max-width: 250px;
     }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 5) - 12px);
+    }
 }
 
 /* Extra large (xl) – устройства от 1200px */
@@ -106,6 +123,10 @@ main {
     .sun {
         max-width: 250px;
     }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 5) - 12px);
+    }
 }
 
 /* Extra extra large (xxl) – устройства от 1400px */
@@ -120,5 +141,28 @@ main {
 
     .sun {
         max-width: 250px;
+    }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 5) - 12px);
+    }
+}
+
+/* Extra extra large (xxl) – устройства от 1400px */
+@media (min-width: 1600px) {
+    main {
+        padding: 0 350px;
+    }
+
+    .sunFlex {
+        flex-direction: row;
+    }
+
+    .sun {
+        max-width: 250px;
+    }
+
+    .carousel {
+        grid-auto-columns: calc((100% / 6) - 12px);
     }
 }

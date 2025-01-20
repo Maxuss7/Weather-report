@@ -7,6 +7,11 @@ const headerStyle = {
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#757da5",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    zIndex: "1",
 };
 
 export default function AppHeader() {

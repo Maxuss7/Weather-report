@@ -4,20 +4,20 @@ import WeatherCard from "./WeatherCard";
 const carouselStyle = {
     display: "grid",
     gridAutoFlow: "column",
-    gridAutoColumns: "calc((100% / 6) - 12px)",
-    alignItems: "center",
+    placeItems: "center",
     height: "200px",
     transition: "transform 0.3s ease-out",
-    overflow: "hidden",
 };
 
 const weatherCardCarouselStyle = {
     position: "relative",
-    width: "100%",
+    maxWidth: "100%",
     backgroundColor: "rgb(117, 125, 165)",
     boxShadow: "0px 0px 30px 8px rgba(0, 0, 0, 0.3)",
     borderRadius: "10px",
     marginBottom: "50px",
+    padding: "0 60px",
+    overflow: "hidden",
 };
 
 const buttonStyle = {
@@ -27,7 +27,7 @@ const buttonStyle = {
     backgroundColor: "rgba(255, 255, 255, 0.75)",
     border: "none",
     outline: "none",
-    borderRadius: "10",
+    borderRadius: "10px",
     width: "40px",
     height: "80px",
     fontSize: "24px",
@@ -36,10 +36,27 @@ const buttonStyle = {
 
 function WeatherCardCarousel({ list, isDay }) {
     const [index, setIndex] = useState(0);
+    const [width, setWidth] = useState(0);
+    const [maxIndex, setMaxIndex] = useState(0);
     const carouselRef = useRef(null);
 
     useLayoutEffect(() => {
         if (!carouselRef.current) return;
+
+        setWidth(carouselRef.current.clientWidth);
+        setMaxIndex(
+            carouselRef.current.clientWidth /
+                carouselRef.current.children[0].clientWidth
+        );
+
+        console.log(
+            carouselRef.current.children.length -
+                (
+                    carouselRef.current.clientWidth /
+                    carouselRef.current.children[0].clientWidth
+                ).toFixed(0) +
+                3
+        );
 
         const cardWidth = carouselRef.current.children[0].clientWidth;
         carouselRef.current.style.transform = `translateX(${
@@ -47,27 +64,27 @@ function WeatherCardCarousel({ list, isDay }) {
         }px)`;
     }, [index]);
 
-    // function leftButtonHandler() {
-    //     setIndex((prev) => prev - 2);
-    // }
-
-    // function rightButtonHandler() {
-    //     setIndex((prev) => prev + 2);
-    // }
-
     function leftButtonHandler() {
         setIndex((prev) => Math.max(prev - 1, 0));
     }
 
     function rightButtonHandler() {
         setIndex((prev) =>
-            Math.min(prev + 1, carouselRef.current.children.length - prev + 1)
+            Math.min(
+                prev + 1,
+                carouselRef.current.children.length -
+                    (
+                        carouselRef.current.clientWidth /
+                        carouselRef.current.children[0].clientWidth
+                    ).toFixed(0) +
+                    3
+            )
         );
     }
 
     return (
         <div style={weatherCardCarouselStyle}>
-            <div ref={carouselRef} style={carouselStyle}>
+            <div ref={carouselRef} className="carousel" style={carouselStyle}>
                 {list.map((day) => (
                     <WeatherCard day={day} isDay={isDay} key={day.dt} />
                 ))}
