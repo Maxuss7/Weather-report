@@ -84,10 +84,10 @@ export default function WeatherContextProvider({ children }) {
         if (city) {
             setLoading(true);
             Promise.all([
-                fetch(`http://localhost:8000/api/weather?city=${city}`).then(
+                fetch(`http://host.docker.internal:8000/api/weather?city=${city}`).then(
                     (resp) => resp.json()
                 ),
-                fetch(`http://localhost:8000/api/forecast?city=${city}`).then(
+                fetch(`http://host.docker.internal:8000/api/forecast?city=${city}`).then(
                     (resp) => resp.json()
                 ),
             ])

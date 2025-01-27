@@ -14,9 +14,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       WEATHER_API_KEY: ${WEATHER_API_KEY}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    networks:
-      - backend_network
-      - frontend_network
 
   frontend:
     build:
@@ -30,37 +27,15 @@ services:
       - /app/frontend/node_modules
     stdin_open: true
     tty: true
-    networks:
-      - frontend_network
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
 
   redis:
     image: redis:7.4.1-alpine
     container_name: redis_server
     ports:
       - ${REDIS_PORTS}
-    # volumes:
-    #   - ./redis_data:${REDIS_DATA_PATH}
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
-    networks:
-      - backend_network
 
-networks:
-  backend_network:
-    driver: bridge
-  frontend_network:
-    driver: bridge
-
-
-  # db:
-  #   image: postges:15
-  #   container_name: weather_postgres
-  #   enviroment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #   ports:
-  #     - ${DB_PORTS}
-  #   volumes:
-  #     - postgres_data:${POSTGRES_DATA_PATH}
