@@ -24,7 +24,7 @@ export default function CurrentCitySunState() {
             {weather.sys && (
                 <section className="sunFlex">
                     <div>
-                        <p>Sunrise</p>
+                        <p>Рассвет</p>
                         <p>{validTime(weather.sys.sunrise, false)}</p>
                         <img
                             className="sun"
@@ -41,7 +41,7 @@ export default function CurrentCitySunState() {
                         ></div>
                     </div>
                     <div>
-                        <p>Sunset</p>
+                        <p>Закат</p>
                         <p>{validTime(weather.sys.sunset, false)}</p>
                         <img
                             className="sun"

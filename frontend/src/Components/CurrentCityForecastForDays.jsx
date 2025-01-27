@@ -7,7 +7,7 @@ export default function CurrentCityForecastForDays() {
 
     return (
         <section>
-            <h2 style={{ textAlign: "center" }}>Forecast for 5 days</h2>
+            <h2 style={{ textAlign: "center" }}>Прогноз на 5 дней</h2>
             {forecast.list && (
                 <WeatherCardCarousel
                     list={getMiddleDay(forecast.list)}

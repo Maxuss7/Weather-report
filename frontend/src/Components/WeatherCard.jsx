@@ -26,7 +26,7 @@ function WeatherCard({ day, isDay }) {
             <div>
                 <WeatherIcon weather={day.weather[0].main.toLowerCase()} />
             </div>
-            <div>{day.wind.speed} m/s</div>
+            <div>{day.wind.speed} м/с</div>
         </div>
     );
 }

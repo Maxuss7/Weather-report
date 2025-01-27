@@ -10,7 +10,6 @@ const currentCityWeatherStyle = {
 
 function CurrentCityWeather() {
     const { weather, locationError } = useWeather();
-
     if (locationError != "") {
         alert(locationError);
     }
@@ -38,7 +37,10 @@ function CurrentCityWeather() {
                     </div>
                     <div style={{ fontSize: "22px", textAlign: "center" }}>
                         <p style={{ marginBottom: 0 }}>
-                            {weather.weather[0].description}
+                            {weather.weather[0].description
+                                .charAt(0)
+                                .toUpperCase() +
+                                weather.weather[0].description.slice(1)}
                         </p>
                         <p style={{ marginTop: 0 }}>
                             {validTemp(weather.main.temp_min)}° /{" "}

@@ -33,18 +33,19 @@ function SearchLocation() {
     return (
         <form onSubmit={submitHandler}>
             <input
+                id="location"
                 type="text"
                 required
                 minLength="2"
                 maxLength="50"
                 size="10"
-                placeholder="location"
+                placeholder="Локация"
                 value={value}
                 onChange={changeHandler}
                 style={inputStyle}
             />
             <button type="submit" style={buttonStyle}>
-                search
+                Поиск
             </button>
         </form>
     );

@@ -32,6 +32,8 @@ export default function WeatherContextProvider({ children }) {
                 setLongitude(position.coords.longitude);
             },
             (error) => {
+                setLatitude(55.7558);
+                setLongitude(37.6176);
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
                         setLocationError(
@@ -91,11 +93,12 @@ export default function WeatherContextProvider({ children }) {
             ])
                 .then(([weatherData, forecastData]) => {
                     if (weatherData.detail === "City not found.") {
-                        alert("Локация не найдена");
+                        // alert("Локация не найдена");
                         throw new Error("Не удалось получить данные о погоде.");
                     }
                     setWeather(weatherData);
                     setForecast(forecastData);
+                    console.log(weatherData);
                 })
                 .catch((error) => {
                     console.error(
