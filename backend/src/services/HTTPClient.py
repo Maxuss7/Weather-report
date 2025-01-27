@@ -8,12 +8,14 @@ class HTTPClient:
         base_url: str,
         api_key: str,
         units: str = "metric",
+        lang: str = "ru",
         redis_client=None,
         ttl: int = 300,
     ):
         self.base_url = base_url
         self.api_key = api_key
         self.units = units
+        self.lang = lang
         self.redis = redis_client
         self.ttl = ttl
 
@@ -30,7 +32,7 @@ class HTTPClient:
         """
         if params is None:
             params = {}
-        params.update({"appid": self.api_key, "units": self.units})
+        params.update({"appid": self.api_key, "units": self.units, "lang": self.lang})
 
         cache_key = self._build_cache_key(endpoint, params)
 

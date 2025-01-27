@@ -31,7 +31,7 @@ def handle_http_error(
 weather_client = HTTPClient(
     base_url=settings.WEATHER_API_URL,
     api_key=settings.WEATHER_API_KEY,
-    redis_client=redis_client,
+    redis_client=redis_client
 )
 
 
