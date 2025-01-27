@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - develop
+      - main
   pull_request:
     branches:
       - develop
+      - main
 
 jobs:
   build-and-test:
@@ -17,10 +19,6 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-          echo "DB_PORTS=${{ secrets.DB_PORTS }}" >> .env
           echo "REDIS_PORTS=${{ secrets.REDIS_PORTS }}" >> .env
           echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
           echo "REDIS_DATA_PATH=${{ vars.REDIS_DATA_PATH }}" >> .env
@@ -54,7 +52,7 @@ jobs:
 
       - name: Verify Backend API
         run: |
-          endpoints=("/api/weather?city=Moscow" "/api/forecast?city=London")
+          endpoints=("/api/weather?city=Moscow", "/api/weather?city=Moscow", "/api/forecast?city=London")
           for endpoint in "${endpoints[@]}"; do
             echo "Checking $endpoint...";
             curl -X GET --fail http://localhost:8000$endpoint || exit 1;
@@ -63,6 +61,8 @@ jobs:
       - name: Verify Redis
         run: |
           echo "Checking Redis connection...";
-          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD PING || exit 1;
-          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a $REDIS_PASSWORD KEYS * || exit 1;
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} PING || exit 1;
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} KEYS "*" || exit 1;
+          echo "damn"
+    
 
