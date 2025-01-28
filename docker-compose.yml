@@ -12,32 +12,30 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    # depends_on:
-    #   - db
+      WEATHER_API_KEY: ${WEATHER_API_KEY}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
 
-#   frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile
-#     container_name: weather_frontend
-#     ports:
-#       - ${FRONTEND_PORTS}
-#     volumes:
-#       - ./frontend:${FRONTEND_PATH}
-#     stdin_open: true
-#     tty: true
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: weather_frontend
+    ports:
+      - ${FRONTEND_PORTS}
+    volumes:
+      - ./frontend:${FRONTEND_PATH}
+      - /app/frontend/node_modules
+    stdin_open: true
+    tty: true
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
 
-#   db:
-#     image: postges:15
-#     container_name: weather_postgres
-#     enviroment:
-#       POSTGRES_USER: ${POSTGRES_USER}
-#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#       POSTGRES_DB: ${POSTGRES_DB}
-#     ports:
-#       - ${DB_PORTS}
-#     volumes:
-#       - postgres_data:${POSTGRES_DATA_PATH}
+  redis:
+    image: redis:7.4.1-alpine
+    container_name: redis_server
+    ports:
+      - ${REDIS_PORTS}
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
 
-# volumes:
-#   postgres_data:

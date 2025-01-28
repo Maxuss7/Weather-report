@@ -3,40 +3,30 @@ name: CI Pipeline
 on:
   push:
     branches:
+      - develop
       - main
   pull_request:
     branches:
+      - develop
       - main
 
 jobs:
-  test-and-build:
-    runs-on: ubuntu-latest
+  Build-and-Tests:
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set environment variables
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          BACKEND_PORTS: ${{ secrets.BACKEND_PORTS }}
-          FRONTEND_PORTS: ${{ secrets.FRONTEND_PORTS }}
-          DB_PORTS: ${{ secrets.DB_PORTS }}
-          BACKEND_PATH: ${{ vars.BACKEND_PATH }}
-          FRONTEND_PATH: ${{ vars.FRONTEND_PATH }}
-          POSTGRES_DATA_PATH: ${{ vars.POSTGRES_DATA_PATH }}
-          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          echo "POSTGRES_USER=${POSTGRES_USER}" >> .env
-          echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> .env
-          echo "POSTGRES_DB=${POSTGRES_DB}" >> .env
-          echo "BACKEND_PORTS=${BACKEND_PORTS}" >> .env
-          echo "DB_PORTS=${DB_PORTS}" >> .env
-          echo "FRONTEND_PORTS=${FRONTEND_PORTS}" >> .env
-          echo "FRONTEND_PATH=${FRONTEND_PATH}" >> .env
-          echo "BACKEND_PATH=${BACKEND_PATH}" >> .env
+          echo "REDIS_PORTS=${{ secrets.REDIS_PORTS }}" >> .env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+          echo "REDIS_DATA_PATH=${{ vars.REDIS_DATA_PATH }}" >> .env
+          echo "BACKEND_PORTS=${{ secrets.BACKEND_PORTS }}" >> .env
+          echo "BACKEND_PATH=${{ vars.BACKEND_PATH }}" >> .env
+          echo "FRONTEND_PORTS=${{ secrets.FRONTEND_PORTS }}" >> .env
+          echo "FRONTEND_PATH=${{ vars.FRONTEND_PATH }}" >> .env
+          echo "WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}" >> .env
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
@@ -44,11 +34,84 @@ jobs:
       - name: Run Docker Compose
         run: docker compose up -d --build
 
-      - name: Wait for the application to be ready
-        run: |
-          echo "Waiting for the app to be ready..."
-          sleep 10
-          curl --fail http://localhost:8000/
+      - name: Sleep for services to initialize
+        run: sleep 10
 
-      - name: Stop and clean up
-        run: docker compose down
+      - name: Check logs for all services
+        run: |
+          services=("weather_frontend" "weather_backend" "redis_server")
+          for service in "${services[@]}"; do
+            echo "Checking logs for $service";
+            docker logs $(docker ps -q -f "name=$service") || exit 1;
+          done
+
+      - name: Verify Frontend (basic)
+        run: |
+          echo "Verifying Frontend (Vite)...";
+          curl -X GET --fail http://localhost:5173/ || exit 1;
+
+      - name: Verify Backend API
+        run: |
+          endpoints=("/api/weather?city=Moscow", "/api/weather?city=Berlin", "/api/forecast?city=London")
+          for endpoint in "${endpoints[@]}"; do
+            echo "Checking $endpoint...";
+            curl -X GET --fail http://localhost:8000$endpoint || exit 1;
+          done
+
+      - name: Verify Redis
+        run: |
+          echo "Checking Redis connection...";
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} PING || exit 1;
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} KEYS "*" || exit 1;
+  
+  # Тесты работают на локальной убунту, но на CI убунту нет..
+  #######################################################
+  #  Для запуска тестов:
+  #
+  #       docker exec weather_frontend /bin/bash -c "
+  #         npx playwright install --with-deps
+  #         npx playwright test
+  #       "
+  ####################################################### 
+  # 
+  #   
+  # E2E-Tests:
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Set environment variables
+  #     run: |
+  #       echo "REDIS_PORTS=${{ secrets.REDIS_PORTS }}" >> .env
+  #       echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+  #       echo "REDIS_DATA_PATH=${{ vars.REDIS_DATA_PATH }}" >> .env
+  #       echo "BACKEND_PORTS=${{ secrets.BACKEND_PORTS }}" >> .env
+  #       echo "BACKEND_PATH=${{ vars.BACKEND_PATH }}" >> .env
+  #       echo "FRONTEND_PORTS=${{ secrets.FRONTEND_PORTS }}" >> .env
+  #       echo "FRONTEND_PATH=${{ vars.FRONTEND_PATH }}" >> .env
+  #       echo "WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}" >> .env
+
+  #   - name: Set up Docker
+  #     uses: docker/setup-buildx-action@v2
+
+  #   - name: Run Docker Compose
+  #     run: docker compose up -d --build
+
+  #   - name: Sleep for services to initialize
+  #     run: sleep 10
+
+  #   - name: Install dependencies and start Playwight Tests
+  #     run: |
+  #       echo "Installing dependencies and running tests inside the weather_frontend container..."
+  #       docker exec weather_frontend /bin/bash -c "
+  #         npx playwright install --with-deps
+  #         CI=1 npx playwright tes
+  #       "
+  #   - uses: actions/upload-artifact@v4
+  #     if: ${{ !cancelled() }}
+  #     with:
+  #       name: playwright-report
+  #       path: playwright-report/
+  #       retention-days: 30
+
+    
+
