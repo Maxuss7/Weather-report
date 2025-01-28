@@ -19,7 +19,8 @@ function WeatherCard({ day, isDay }) {
     return (
         <div style={dayItemStyle} key={day.dt}>
             <div>
-                {isDay && getWeekDay(new Date(day.dt * 1000))}{" "}
+                {isDay && getWeekDay(new Date(day.dt * 1000))}
+                <br />
                 {validTime(day.dt, false)}
             </div>
             <div>{validTemp(day.main.temp)}°</div>

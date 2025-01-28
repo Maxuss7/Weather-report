@@ -24,6 +24,14 @@ export function getMiddleDay(days) {
 }
 
 export function getWeekDay(date) {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const days = [
+        "Понедельник",
+        "Вторник",
+        "Среда",
+        "Четверг",
+        "Пятница",
+        "Суббота",
+        "Воскресенье",
+    ];
     return days[[6, 0, 1, 2, 3, 4, 5][date.getDay()]];
 }
