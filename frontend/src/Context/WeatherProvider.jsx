@@ -98,7 +98,6 @@ export default function WeatherContextProvider({ children }) {
                     }
                     setWeather(weatherData);
                     setForecast(forecastData);
-                    console.log(weatherData);
                 })
                 .catch((error) => {
                     console.error(
