@@ -1,5 +1,7 @@
 # Weather App
 
+![Weather App](example.png)
+
 This is a weather forecast application that retrieves weather data using the [OpenWeatherAPI](https://openweathermap.org/api) and displays the forecast. The app is built with **React** for the frontend and **FastAPI** for the backend. **Redis** is used for caching weather data to reduce the number of API calls to OpenWeatherAPI. Both the frontend and backend are containerized using **Docker**.
 
 ## Features
@@ -71,7 +73,7 @@ This will:
 ### 4. Access the app:
 
 Once the containers are up and running, open your browser and navigate to `http://localhost:5173` to use the weather app.
-
+ 
 
 ## Stopping the Application
 
