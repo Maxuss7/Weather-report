@@ -40,7 +40,7 @@ cd weather-app
 
 1. Create an account on [OpenWeatherAPI](https://openweathermap.org/api) and get your API key.
 2. Add the API key to the `.env` file under the root directory.
-3. Repeat with [Yandex GeocoderAPI](https://yandex.ru/maps-api/products/geocoder-api)
+3. Do the same for [Yandex GeocoderAPI](https://yandex.ru/maps-api/products/geocoder-api).
 3. Add Reddis password to the `.env` file.
 
 How .env looks according to our docker-compose.yml:
