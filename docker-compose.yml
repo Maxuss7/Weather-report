@@ -9,9 +9,6 @@ services:
     volumes:
       - ./backend:${BACKEND_PATH}
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
       WEATHER_API_KEY: ${WEATHER_API_KEY}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
 
@@ -25,10 +22,8 @@ services:
     volumes:
       - ./frontend:${FRONTEND_PATH}
       - /app/frontend/node_modules
-    stdin_open: true
-    tty: true
-    extra_hosts:
-    - "host.docker.internal:host-gateway"
+    environment:
+      VITE_GEOCODE_API_KEY: ${VITE_GEOCODE_API_KEY}
 
   redis:
     image: redis:7.4.1-alpine
