@@ -62,19 +62,8 @@ jobs:
         run: |
           echo "Checking Redis connection...";
           docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} PING || exit 1;
-          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} KEYS "*" || exit 1;
-  
-  # Тесты работают на локальной убунту, но на CI убунту нет..
-  #######################################################
-  #  Для запуска тестов:
-  #
-  #       docker exec weather_frontend /bin/bash -c "
-  #         npx playwright install --with-deps
-  #         npx playwright test
-  #       "
-  ####################################################### 
-  # 
-  #   
+          docker exec $(docker ps -q -f "name=redis_server") redis-cli -a ${{ secrets.REDIS_PASSWORD }} KEYS "*" || exit 1
+
   # E2E-Tests:
   #   runs-on: ubuntu-24.04
   #   steps:
