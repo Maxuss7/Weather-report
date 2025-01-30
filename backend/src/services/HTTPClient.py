@@ -1,5 +1,5 @@
 import httpx
-from services.redis_cache import get_from_cache, save_in_cache
+import src.services.redis_cache as redis_cache
 
 
 class HTTPClient:
@@ -38,7 +38,7 @@ class HTTPClient:
 
         # Check cache
         if self.redis:
-            cached_data = await get_from_cache(self.redis, cache_key)
+            cached_data = await redis_cache.get_from_cache(self.redis, cache_key)
             if cached_data:
                 return cached_data
 
@@ -50,7 +50,7 @@ class HTTPClient:
 
         # Save in cache
         if self.redis:
-            await save_in_cache(self.redis, cache_key, data, self.ttl)
+            await redis_cache.save_in_cache(self.redis, cache_key, data, self.ttl)
 
         return data
 

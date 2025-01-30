@@ -1,6 +1,6 @@
-from config import settings
-from services.HTTPClient import HTTPClient
-from services.redis_cache import redis_client
+from src.config import settings
+from src.services.HTTPClient import HTTPClient
+from src.services.redis_cache import redis_client
 from httpx import HTTPStatusError
 from fastapi import HTTPException
 
