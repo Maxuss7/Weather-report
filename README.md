@@ -32,8 +32,8 @@ This is a weather forecast application that retrieves weather data using the [Op
 ### 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/weather-app.git
-cd weather-app
+git clone https://github.com/Maxuss7/Weather-report
+cd Weather-report
 ```
 
 ### 2. Configure ENV file :
