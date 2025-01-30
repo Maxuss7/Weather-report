@@ -61,7 +61,7 @@ FRONTEND_PATH=/app/frontend
 To start the frontend, backend, and Redis services in Docker containers, run the following command:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This will:
