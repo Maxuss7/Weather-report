@@ -82,7 +82,7 @@ Once the containers are up and running, open your browser and navigate to `http:
 To stop the Docker containers:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 This will stop and remove the containers but leave the images intact.
