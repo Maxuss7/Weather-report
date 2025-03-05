@@ -1,8 +1,9 @@
+from fastapi import HTTPException
+from httpx import HTTPStatusError
 from src.config import settings
 from src.services.HTTPClient import HTTPClient
 from src.services.redis_cache import redis_client
-from httpx import HTTPStatusError
-from fastapi import HTTPException
+from src.services.json_parser import filter_24_hours_forecast, filter_5_days_forecast
 
 
 def handle_http_error(
@@ -50,18 +51,37 @@ async def get_weather(city: str):
     except HTTPStatusError as e:
         handle_http_error(e, default_message="Error fetching weather data.")
 
-
-async def get_forecast(city: str):
+async def get_24_hours_forecast(city: str):
     """
-    Fetch the forecast for a given city.
+    Fetch the forecast for a given city for the next 24 hours.
 
     Args:
         city (str): Name of the city.
 
     Returns:
-        dict: Five day forecast, each day has 8 forecasts for each 3 hours.
+        list: Forecast data for the next 24 hours (8 forecasts).
     """
     try:
-        return await weather_client.get("forecast", {"q": city})
+        forecast_data = await weather_client.get("forecast", {"q": city})
+        filtered_forecasts = filter_24_hours_forecast(forecast_data)
+        return filtered_forecasts
     except HTTPStatusError as e:
         handle_http_error(e, default_message="Error fetching forecast data.")
+
+async def get_5_days_forecast(city: str):
+    """
+    Fetch the forecast for a given city for the next 5 days (only 5 forecasts at 12:00).
+
+    Args:
+        city (str): Name of the city.
+
+    Returns:
+        list: Forecast data for the next 5 days.
+    """
+    try:
+        forecast_data = await weather_client.get("forecast", {"q": city})
+        filtered_forecasts = filter_5_days_forecast(forecast_data)
+        return filtered_forecasts
+    except HTTPStatusError as e:
+        handle_http_error(e, default_message="Error fetching forecast data.")
+

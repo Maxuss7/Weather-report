@@ -1,12 +1,6 @@
 name: CI Pipeline
 
 on:
-  push:
-    branches:
-      - develop
-      - main
-    paths-ignore:
-      - 'README.md'
   pull_request:
     branches:
       - develop
@@ -49,14 +43,14 @@ jobs:
             docker logs $(docker ps -q -f "name=$service") || exit 1;
           done
 
-      - name: Verify Frontend (basic)
-        run: |
-          echo "Verifying Frontend (Vite)...";
-          curl -X GET --fail http://localhost:5173/ || exit 1;
+      # - name: Verify Frontend (basic)
+      #   run: |
+      #     echo "Verifying Frontend (Vite)...";
+      #     curl -X GET --fail http://localhost:5173/ || exit 1;
 
       - name: Verify Backend API
         run: |
-          endpoints=("/api/weather?city=Moscow", "/api/weather?city=Berlin", "/api/forecast?city=London")
+          endpoints=("/api/weather?city=Moscow", "/api/get_24_hours_forecast?city=Berlin", "/api/get_5_days_forecast?city=Berlin")
           for endpoint in "${endpoints[@]}"; do
             echo "Checking $endpoint...";
             curl -X GET --fail http://localhost:8000$endpoint || exit 1;

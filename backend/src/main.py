@@ -5,10 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     title="Weather App",
     description="App for getting information about weather.",
-    versin="0.0.1",
+    version="0.0.1",
 )
 
-origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+origins = ["https://weather-app.ru", "http://localhost:5173", "http://127.0.0.1:5173"]
 
 app.add_middleware(
     CORSMiddleware,

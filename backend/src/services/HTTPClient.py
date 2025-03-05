@@ -34,7 +34,7 @@ class HTTPClient:
             params = {}
         params.update({"appid": self.api_key, "units": self.units, "lang": self.lang})
 
-        cache_key = self._build_cache_key(endpoint, params)
+        cache_key = self.build_cache_key(endpoint, params)
 
         # Check cache
         if self.redis:
@@ -54,7 +54,7 @@ class HTTPClient:
 
         return data
 
-    def _build_cache_key(self, endpoint, params: dict) -> str:
+    def build_cache_key(self, endpoint, params: dict) -> str:
         """
         Build a cache key based on the city name (parameter 'q').
 
