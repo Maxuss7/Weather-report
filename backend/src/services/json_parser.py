@@ -55,7 +55,6 @@ def filter_forecast(data):
         del forecast['dt']
         del forecast['clouds']
         del forecast['visibility']
-        del forecast['sys']
 
         filtered_forecasts.append(forecast)
 
