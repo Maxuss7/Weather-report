@@ -43,10 +43,10 @@ jobs:
             docker logs $(docker ps -q -f "name=$service") || exit 1;
           done
 
-      # - name: Verify Frontend (basic)
-      #   run: |
-      #     echo "Verifying Frontend (Vite)...";
-      #     curl -X GET --fail http://localhost:5173/ || exit 1;
+      - name: Verify Frontend (basic)
+        run: |
+          echo "Verifying Frontend (Vite)...";
+          curl -X GET --fail http://localhost:5173/ || exit 1;
 
       - name: Verify Backend API
         run: |
