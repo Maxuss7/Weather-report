@@ -2,17 +2,17 @@ import { createContext, useEffect, useState, useContext } from "react";
 
 const WeatherContext = createContext({
     weather: {},
-    forecast24h: {},
-    forecast5d: {},
     loading: false,
     locationError: "",
     getWeather: () => {},
 });
 
 export default function WeatherContextProvider({ children }) {
-    const [weather, setWeather] = useState({});
-    const [forecast24h, setForecast24h] = useState({});
-    const [forecast5d, setForecast5d] = useState({});
+    const [weather, setWeather] = useState({
+        weather: {},
+        forecast24h: {},
+        forecast5d: {},
+    });
 
     const [loading, setLoading] = useState(false);
 
@@ -23,11 +23,9 @@ export default function WeatherContextProvider({ children }) {
     const [city, setCity] = useState("");
 
     function getCoords() {
-        setLoading(true);
 
         if (!navigator.geolocation) {
             setLocationError("Ваш браузер не поддерживает геолокацию.");
-            setLoading(false); // Сбрасываем loading
             return;
         }
 
@@ -35,7 +33,7 @@ export default function WeatherContextProvider({ children }) {
             (position) => {
                 setLatitude(position.coords.latitude);
                 setLongitude(position.coords.longitude);
-                setLoading(false); // Сбрасываем loading после успеха
+                
             },
             (error) => {
                 setLatitude(55.7558); // Значения по умолчанию (Москва)
@@ -62,7 +60,6 @@ export default function WeatherContextProvider({ children }) {
                         );
                         break;
                 }
-                setLoading(false); // Сбрасываем loading в случае ошибки
             }
         );
     }
@@ -115,14 +112,13 @@ export default function WeatherContextProvider({ children }) {
             const weather = await getCurrentWeather(city);
             const forecast24h = await getForecast24h(city);
             const forecast5d = await getForecast5d(city);
-            setWeather(weather);
-            setForecast24h(forecast24h);
-            setForecast5d(forecast5d);
+            setWeather({ weather, forecast24h, forecast5d });
         }
     }
 
     // Получаем координаты при монтировании компонента
     useEffect(() => {
+        setLoading(true);
         getCoords();
     }, []);
 
@@ -144,7 +140,7 @@ export default function WeatherContextProvider({ children }) {
 
     return (
         <WeatherContext.Provider
-            value={{ weather, forecast24h, forecast5d, loading, locationError, getWeather }}
+            value={{ weather, loading, locationError, getWeather }}
         >
             {children}
         </WeatherContext.Provider>

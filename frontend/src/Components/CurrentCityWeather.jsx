@@ -18,7 +18,7 @@ function CurrentCityWeather() {
 
     return (
         <>
-            {weather.name && (
+            {weather.weather.weather && (
                 <section style={currentCityWeatherStyle}>
                     <h1
                         style={{
@@ -32,21 +32,21 @@ function CurrentCityWeather() {
                     <div>
                         <p style={{ marginBottom: 0 }}>
                             <span style={{ fontWeight: 700, fontSize: "54px" }}>
-                                {validTemp(weather.main.temp)}
+                                {validTemp(weather.weather.main.temp)}
                             </span>
                             <sup style={{ fontSize: "40px" }}>℃</sup>
                         </p>
                     </div>
                     <div style={{ fontSize: "22px", textAlign: "center" }}>
                         <p style={{ marginBottom: 0 }}>
-                            {weather.weather[0].description
+                            {weather.weather.weather[0].description
                                 .charAt(0)
                                 .toUpperCase() +
-                                weather.weather[0].description.slice(1)}
+                                weather.weather.weather[0].description.slice(1)}
                         </p>
                         <p style={{ marginTop: 0 }}>
-                            {validTemp(weather.main.temp_min)}° /{" "}
-                            {validTemp(weather.main.temp_max)}°
+                            {validTemp(weather.weather.main.temp_min)}° /{" "}
+                            {validTemp(weather.weather.main.temp_max)}°
                         </p>
                     </div>
                 </section>
