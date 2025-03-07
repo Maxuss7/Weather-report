@@ -17,11 +17,11 @@ const dayItemStyle = {
 
 function WeatherCard({ day, isDay }) {
     return (
-        <div style={dayItemStyle} key={day.dt}>
+        <div style={dayItemStyle}>
             <div>
-                {isDay && getWeekDay(new Date(day.dt * 1000))}
+                {isDay && day.small_date_russian}
                 <br />
-                {validTime(day.dt, false)}
+                {day.time}
             </div>
             <div>{validTemp(day.main.temp)}°</div>
             <div>
