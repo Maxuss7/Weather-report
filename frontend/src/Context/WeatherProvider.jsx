@@ -76,7 +76,7 @@ export default function WeatherContextProvider({ children }) {
                     const newCity =
                         data.response.GeoObjectCollection.featureMember[0]
                             .GeoObject.name;
-                    setCity(newCity); // Обновляем city
+                    setCity(newCity); 
                 })
                 .catch((error) => {
                     console.error("Ошибка при выполнении запроса:", error);
@@ -112,7 +112,13 @@ export default function WeatherContextProvider({ children }) {
             const weather = await getCurrentWeather(city);
             const forecast24h = await getForecast24h(city);
             const forecast5d = await getForecast5d(city);
-            setWeather({ weather, forecast24h, forecast5d });
+
+            if(weather.detail ==="City not found."){
+                alert("Город не найден!")
+                return
+            }
+
+            setWeather({weather, forecast24h, forecast5d})
         }
     }
 
