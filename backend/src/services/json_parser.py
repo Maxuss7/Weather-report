@@ -88,6 +88,6 @@ def filter_5_days_forecast(data):
 
     for forecast in filtered_forecasts:
         if forecast.get('time') == "12:00":
-            date = forecast['fulldate']
+            five_forecasts.append(forecast)
 
     return five_forecasts
