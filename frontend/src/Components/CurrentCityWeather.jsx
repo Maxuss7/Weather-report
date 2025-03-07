@@ -10,7 +10,6 @@ const currentCityWeatherStyle = {
 
 function CurrentCityWeather() {
     const { weather, locationError } = useWeather();
-    console.log(weather)
 
     if (locationError != "") {
         alert(locationError);
