@@ -101,7 +101,7 @@ export default function WeatherContextProvider({ children }) {
 
     async function getForecast5d(city) {
         const response = await fetch(
-            `http://localhost:8000/api/get_24_hours_forecast?city=${city}`
+            `http://localhost:8000/api/get_5_days_forecast?city=${city}`
         ).then((resp) => resp.json());
 
         return response;
@@ -132,9 +132,9 @@ export default function WeatherContextProvider({ children }) {
     // Получаем погоду при изменении города
     useEffect(() => {
         if (city) {
-            setLoading(true);
-            getWeather(city);
-            setLoading(false);
+            getWeather(city).then(() => {
+                setLoading(false);
+            });
         }
     }, [city]);
 
