@@ -10,6 +10,8 @@ const currentCityWeatherStyle = {
 
 function CurrentCityWeather() {
     const { weather, locationError } = useWeather();
+    console.log(weather)
+
     if (locationError != "") {
         alert(locationError);
     }
@@ -25,7 +27,7 @@ function CurrentCityWeather() {
                             marginBottom: 0,
                         }}
                     >
-                        {weather.name}
+                        {weather.weather.name}
                     </h1>
                     <div>
                         <p style={{ marginBottom: 0 }}>

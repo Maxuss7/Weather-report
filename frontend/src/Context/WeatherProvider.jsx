@@ -2,7 +2,8 @@ import { createContext, useEffect, useState, useContext } from "react";
 
 const WeatherContext = createContext({
     weather: {},
-    forecast: {},
+    forecast24h: {},
+    forecast5d: {},
     loading: false,
     locationError: "",
     getWeather: () => {},
@@ -10,7 +11,9 @@ const WeatherContext = createContext({
 
 export default function WeatherContextProvider({ children }) {
     const [weather, setWeather] = useState({});
-    const [forecast, setForecast] = useState({});
+    const [forecast24h, setForecast24h] = useState({});
+    const [forecast5d, setForecast5d] = useState({});
+
     const [loading, setLoading] = useState(false);
 
     const [latitude, setLatitude] = useState(null);
@@ -24,15 +27,18 @@ export default function WeatherContextProvider({ children }) {
 
         if (!navigator.geolocation) {
             setLocationError("Ваш браузер не поддерживает геолокацию.");
+            setLoading(false); // Сбрасываем loading
+            return;
         }
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 setLatitude(position.coords.latitude);
                 setLongitude(position.coords.longitude);
+                setLoading(false); // Сбрасываем loading после успеха
             },
             (error) => {
-                setLatitude(55.7558);
+                setLatitude(55.7558); // Значения по умолчанию (Москва)
                 setLongitude(37.6176);
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
@@ -56,6 +62,7 @@ export default function WeatherContextProvider({ children }) {
                         );
                         break;
                 }
+                setLoading(false); // Сбрасываем loading в случае ошибки
             }
         );
     }
@@ -69,10 +76,10 @@ export default function WeatherContextProvider({ children }) {
             )
                 .then((response) => response.json())
                 .then((data) => {
-                    setCity(
+                    const newCity =
                         data.response.GeoObjectCollection.featureMember[0]
-                            .GeoObject.name
-                    );
+                            .GeoObject.name;
+                    setCity(newCity); // Обновляем city
                 })
                 .catch((error) => {
                     console.error("Ошибка при выполнении запроса:", error);
@@ -80,55 +87,64 @@ export default function WeatherContextProvider({ children }) {
         }
     }
 
-    function getWeather(city) {
+    async function getCurrentWeather(city) {
+        const response = await fetch(
+            `http://localhost:8000/api/weather?city=${city}`
+        ).then((resp) => resp.json());
+        return response;
+    }
+
+    async function getForecast24h(city) {
+        const response = await fetch(
+            `http://localhost:8000/api/get_24_hours_forecast?city=${city}`
+        ).then((resp) => resp.json());
+
+        return response;
+    }
+
+    async function getForecast5d(city) {
+        const response = await fetch(
+            `http://localhost:8000/api/get_24_hours_forecast?city=${city}`
+        ).then((resp) => resp.json());
+
+        return response;
+    }
+
+    async function getWeather(city) {
         if (city) {
-            setLoading(true);
-            Promise.all([
-                fetch(`http://localhost:8000/api/weather?city=${city}`).then(
-                    (resp) => resp.json()
-                ),
-                fetch(`http://localhost:8000/api/forecast?city=${city}`).then(
-                    (resp) => resp.json()
-                ),
-            ])
-                .then(([weatherData, forecastData]) => {
-                    if (weatherData.detail === "City not found.") {
-                        // alert("Локация не найдена");
-                        throw new Error("Не удалось получить данные о погоде.");
-                    }
-                    setWeather(weatherData);
-                    setForecast(forecastData);
-                })
-                .catch((error) => {
-                    console.error(
-                        "Ошибка при получении данных о погоде:",
-                        error
-                    );
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
+            const weather = await getCurrentWeather(city);
+            const forecast24h = await getForecast24h(city);
+            const forecast5d = await getForecast5d(city);
+            setWeather(weather);
+            setForecast24h(forecast24h);
+            setForecast5d(forecast5d);
         }
     }
 
-    // Получаем координаты
+    // Получаем координаты при монтировании компонента
     useEffect(() => {
         getCoords();
     }, []);
 
     // Получаем город по координатам
     useEffect(() => {
-        getCity();
+        if (latitude && longitude) {
+            getCity();
+        }
     }, [latitude, longitude]);
 
-    // Получаем данные о погоде
+    // Получаем погоду при изменении города
     useEffect(() => {
-        getWeather(city);
+        if (city) {
+            setLoading(true);
+            getWeather(city);
+            setLoading(false);
+        }
     }, [city]);
 
     return (
         <WeatherContext.Provider
-            value={{ weather, forecast, loading, locationError, getWeather }}
+            value={{ weather, forecast24h, forecast5d, loading, locationError, getWeather }}
         >
             {children}
         </WeatherContext.Provider>

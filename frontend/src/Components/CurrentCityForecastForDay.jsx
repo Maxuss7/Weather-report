@@ -6,9 +6,9 @@ export default function CurrentCityForecastForDay() {
     return (
         <section>
             <h2 style={{ textAlign: "center" }}>Прогноз на 24 часа</h2>
-            {forecast.list && (
+            {/* {forecast.list && (
                 <WeatherCardCarousel list={forecast.list.slice(0, 9)} />
-            )}
+            )} */}
         </section>
     );
 }

@@ -11,3 +11,4 @@ venv.bak/
 __pycache__/
 redis_data/
 postgres_data/
+.vscode

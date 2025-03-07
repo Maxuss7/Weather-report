@@ -21,7 +21,7 @@ export default function CurrentCitySunState() {
     const { weather } = useWeather();
     return (
         <>
-            {weather.sys && (
+            {/* {weather.sys && (
                 <section className="sunFlex">
                     <div>
                         <p>Рассвет</p>
@@ -58,7 +58,7 @@ export default function CurrentCitySunState() {
                         ></div>
                     </div>
                 </section>
-            )}
+            )} */}
         </>
     );
 }
