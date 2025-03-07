@@ -69,7 +69,7 @@ function WeatherCardCarousel({ list, isDay }) {
         <div style={weatherCardCarouselStyle}>
             <div ref={carouselRef} className="carousel" style={carouselStyle}>
                 {list.map((day) => (
-                    <WeatherCard day={day} isDay={isDay} key={day.dt} />
+                    <WeatherCard day={day} isDay={isDay} />
                 ))}
             </div>
             <button

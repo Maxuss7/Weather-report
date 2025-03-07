@@ -19,9 +19,7 @@ function WeatherCard({ day, isDay }) {
     return (
         <div style={dayItemStyle}>
             <div>
-                {isDay && day.small_date_russian}
-                <br />
-                {day.time}
+                {(isDay || day.time === "00:00")  ? day.small_date_russian : day.time}
             </div>
             <div>{validTemp(day.main.temp)}°</div>
             <div>
