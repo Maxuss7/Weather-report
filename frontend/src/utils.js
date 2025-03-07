@@ -5,14 +5,8 @@ export function validTemp(temp) {
     return temp.toFixed(0);
 }
 
-export function validTime(data, isDay) {
-    const time = new Date(data * 1000).toLocaleTimeString().slice(0, 5);
-    const day = new Date(data * 1000).toLocaleDateString().slice(0, 5);
-
-    if (time === "00:00" || isDay) {
-        return day;
-    }
-
+export function validTime(data) {
+    const time = new Date(data * 1000).toTimeString().slice(0, 5);
     return time;
 }
 

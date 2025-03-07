@@ -21,11 +21,11 @@ export default function CurrentCitySunState() {
     const { weather } = useWeather();
     return (
         <>
-            {/* {weather.sys && (
+            {weather.weather.sys && (
                 <section className="sunFlex">
                     <div>
                         <p>Рассвет</p>
-                        <p>{validTime(weather.sys.sunrise, false)}</p>
+                        <p>{validTime(weather.weather.sys.sunrise)}</p>
                         <img
                             className="sun"
                             src="../../img/sunrise.png"
@@ -42,7 +42,7 @@ export default function CurrentCitySunState() {
                     </div>
                     <div>
                         <p>Закат</p>
-                        <p>{validTime(weather.sys.sunset, false)}</p>
+                        <p>{validTime(weather.weather.sys.sunset)}</p>
                         <img
                             className="sun"
                             src="../../img/sunset.png"
@@ -58,7 +58,7 @@ export default function CurrentCitySunState() {
                         ></div>
                     </div>
                 </section>
-            )} */}
+            )}
         </>
     );
 }
