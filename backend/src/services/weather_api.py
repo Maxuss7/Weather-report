@@ -8,7 +8,7 @@ from src.services.json_parser import filter_24_hours_forecast, filter_5_days_for
 
 def handle_http_error(
     e: HTTPStatusError, default_message: str = "Unexpected error occurred"
-):
+) -> None:
     """
     Handles HTTP request errors and converts them into an HTTPException.
 
@@ -32,11 +32,11 @@ def handle_http_error(
 weather_client = HTTPClient(
     base_url=settings.WEATHER_API_URL,
     api_key=settings.WEATHER_API_KEY,
-    redis_client=redis_client
+    redis_client=redis_client,
 )
 
 
-async def get_weather(city: str):
+async def get_weather(city: str) -> dict:
     """
     Fetch the current weather for a given city.
 
@@ -51,7 +51,8 @@ async def get_weather(city: str):
     except HTTPStatusError as e:
         handle_http_error(e, default_message="Error fetching weather data.")
 
-async def get_24_hours_forecast(city: str):
+
+async def get_24_hours_forecast(city: str) -> list:
     """
     Fetch the forecast for a given city for the next 24 hours.
 
@@ -68,7 +69,8 @@ async def get_24_hours_forecast(city: str):
     except HTTPStatusError as e:
         handle_http_error(e, default_message="Error fetching forecast data.")
 
-async def get_5_days_forecast(city: str):
+
+async def get_5_days_forecast(city: str) -> list:
     """
     Fetch the forecast for a given city for the next 5 days (only 5 forecasts at 12:00).
 
@@ -84,4 +86,3 @@ async def get_5_days_forecast(city: str):
         return filtered_forecasts
     except HTTPStatusError as e:
         handle_http_error(e, default_message="Error fetching forecast data.")
-

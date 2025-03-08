@@ -1,5 +1,5 @@
 import httpx
-import src.services.redis_cache as redis_cache
+from src.services import redis_cache
 
 
 class HTTPClient:

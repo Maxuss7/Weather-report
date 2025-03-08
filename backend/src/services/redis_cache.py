@@ -13,7 +13,7 @@ redis_client = Redis(
 )
 
 
-async def get_from_cache(redis: Redis, key: str):
+async def get_from_cache(redis: Redis, key: str) -> dict | None:
     """
     Retrieve data from the Redis cache.
 
@@ -30,10 +30,11 @@ async def get_from_cache(redis: Redis, key: str):
         logging.info(f"Cache hit for key: {key}")
         return json.loads(cached_data)
     logging.info(f"Cache miss for key: {key}")
+
     return None
 
 
-async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600):
+async def save_in_cache(redis: Redis, key: str, value: dict, ttl: int = 3600) -> None:
     """
     Save data to the Redis cache with a specified time-to-live (TTL).
 

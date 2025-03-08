@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+
 
 WEEKDAYS_RU = {
     0: "Понедельник",
@@ -7,7 +8,7 @@ WEEKDAYS_RU = {
     3: "Четверг",
     4: "Пятница",
     5: "Суббота",
-    6: "Воскресенье"
+    6: "Воскресенье",
 }
 
 WEEKDAYS_EN = {
@@ -17,10 +18,11 @@ WEEKDAYS_EN = {
     3: "Thursday",
     4: "Friday",
     5: "Saturday",
-    6: "Sunday"
+    6: "Sunday",
 }
 
-def filter_forecast(data):
+
+def filter_forecast(data: dict) -> list:
     """
     Filters the forecast data and adds additional fields.
 
@@ -31,8 +33,8 @@ def filter_forecast(data):
         list: A list of filtered forecast data.
     """
     filtered_forecasts = []
-    for forecast in data['list']:
-        dt_txt = forecast['dt_txt']
+    for forecast in data["list"]:
+        dt_txt = forecast["dt_txt"]
         date, time = dt_txt.split(" ")
         time_without_seconds = time.rsplit(":", 1)[0]
 
@@ -44,22 +46,23 @@ def filter_forecast(data):
         weekday_ru = WEEKDAYS_RU[weekday_number]
         weekday_en = WEEKDAYS_EN[weekday_number]
 
-        forecast['time'] = time_without_seconds
-        forecast['fulldate'] = fulldate
-        forecast['date_russian'] = date_russian
-        forecast['small_date_russian'] = small_date_russian
-        forecast['weekday_ru'] = weekday_ru
-        forecast['weekday_en'] = weekday_en
+        forecast["time"] = time_without_seconds
+        forecast["fulldate"] = fulldate
+        forecast["date_russian"] = date_russian
+        forecast["small_date_russian"] = small_date_russian
+        forecast["weekday_ru"] = weekday_ru
+        forecast["weekday_en"] = weekday_en
 
-        del forecast['dt_txt']
-        del forecast['dt']
-        del forecast['clouds']
+        del forecast["dt_txt"]
+        del forecast["dt"]
+        del forecast["clouds"]
 
         filtered_forecasts.append(forecast)
 
     return filtered_forecasts
 
-def filter_24_hours_forecast(data):
+
+def filter_24_hours_forecast(data: dict) -> list:
     """
     Filters the forecast data to return only the next 24 hours (8 forecasts).
 
@@ -70,9 +73,11 @@ def filter_24_hours_forecast(data):
         list: A list of forecast data for the next 24 hours.
     """
     filtered_forecasts = filter_forecast(data)
+
     return filtered_forecasts[:8]
 
-def filter_5_days_forecast(data):
+
+def filter_5_days_forecast(data: dict) -> list:
     """
     Filters the forecast data to return 5 days forecasts (5 forecasts at 12:00).
 
@@ -86,7 +91,7 @@ def filter_5_days_forecast(data):
     five_forecasts = []
 
     for forecast in filtered_forecasts:
-        if forecast.get('time') == "12:00":
+        if forecast.get("time") == "12:00":
             five_forecasts.append(forecast)
 
     return five_forecasts
