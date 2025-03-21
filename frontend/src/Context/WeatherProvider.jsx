@@ -23,7 +23,6 @@ export default function WeatherContextProvider({ children }) {
     const [city, setCity] = useState("");
 
     function getCoords() {
-
         if (!navigator.geolocation) {
             setLocationError("Ваш браузер не поддерживает геолокацию.");
             return;
@@ -33,7 +32,6 @@ export default function WeatherContextProvider({ children }) {
             (position) => {
                 setLatitude(position.coords.latitude);
                 setLongitude(position.coords.longitude);
-                
             },
             (error) => {
                 setLatitude(55.7558); // Значения по умолчанию (Москва)
@@ -76,7 +74,7 @@ export default function WeatherContextProvider({ children }) {
                     const newCity =
                         data.response.GeoObjectCollection.featureMember[0]
                             .GeoObject.name;
-                    setCity(newCity); 
+                    setCity(newCity);
                 })
                 .catch((error) => {
                     console.error("Ошибка при выполнении запроса:", error);
@@ -113,12 +111,11 @@ export default function WeatherContextProvider({ children }) {
             const forecast24h = await getForecast24h(city);
             const forecast5d = await getForecast5d(city);
 
-            if(weather.detail ==="City not found."){
-                alert("Город не найден!")
-                return
+            if (weather.detail === "City not found.") {
+                return;
             }
 
-            setWeather({weather, forecast24h, forecast5d})
+            setWeather({ weather, forecast24h, forecast5d });
         }
     }
 
