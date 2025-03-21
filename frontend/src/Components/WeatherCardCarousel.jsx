@@ -19,17 +19,24 @@ function WeatherCardCarousel({ list, isDay }) {
     const [width, setWidth] = useState(0);
 
     useEffect(() => {
-        if (divRef.current) {
+        const handleResize = () => {
             setWidth(divRef.current.offsetWidth);
-        }
+        };
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
     }, []);
 
     return (
         <div style={weatherCardCarouselStyle} ref={divRef}>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
-                spaceBetween={30}
-                slidesPerView={width / 130}
+                spaceBetween={width > 600 ? 40 : 20}
+                slidesPerView={width / 140}
                 navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
