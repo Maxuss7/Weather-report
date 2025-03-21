@@ -1,89 +1,45 @@
-import { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import WeatherCard from "./WeatherCard";
-
-const carouselStyle = {
-    display: "grid",
-    gridAutoFlow: "column",
-    placeItems: "center",
-    height: "200px",
-    transition: "transform 0.3s ease-out",
-};
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import "swiper/css";
 
 const weatherCardCarouselStyle = {
-    position: "relative",
     maxWidth: "100%",
     backgroundColor: "rgb(117, 125, 165)",
     boxShadow: "0px 0px 30px 8px rgba(0, 0, 0, 0.3)",
     borderRadius: "10px",
     marginBottom: "50px",
-    padding: "0 60px",
-    overflow: "hidden",
-};
-
-const buttonStyle = {
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    backgroundColor: "rgba(255, 255, 255, 0.75)",
-    border: "none",
-    outline: "none",
-    borderRadius: "10px",
-    width: "40px",
-    height: "80px",
-    fontSize: "24px",
-    cursor: "pointer",
+    height: "180px",
+    padding: "10px",
 };
 
 function WeatherCardCarousel({ list, isDay }) {
-    const [index, setIndex] = useState(0);
-    const carouselRef = useRef(null);
+    const divRef = useRef();
+    const [width, setWidth] = useState(0);
 
-    useLayoutEffect(() => {
-        if (!carouselRef.current) return;
-
-        const cardWidth = carouselRef.current.children[0].clientWidth;
-        carouselRef.current.style.transform = `translateX(${
-            -index * cardWidth
-        }px)`;
-    }, [index]);
-
-    function leftButtonHandler() {
-        setIndex((prev) => Math.max(prev - 1, 0));
-    }
-
-    function rightButtonHandler() {
-        setIndex((prev) =>
-            Math.min(
-                prev + 1,
-                carouselRef.current.children.length -
-                    (
-                        carouselRef.current.clientWidth /
-                        carouselRef.current.children[0].clientWidth
-                    ).toFixed(0) +
-                    2
-            )
-        );
-    }
+    useEffect(() => {
+        if (divRef.current) {
+            setWidth(divRef.current.offsetWidth);
+        }
+    }, []);
 
     return (
-        <div style={weatherCardCarouselStyle}>
-            <div ref={carouselRef} className="carousel" style={carouselStyle}>
-                {list.map((day) => (
-                    <WeatherCard day={day} isDay={isDay} key={list.indexOf(day)}/>
+        <div style={weatherCardCarouselStyle} ref={divRef}>
+            <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                spaceBetween={30}
+                slidesPerView={width / 130}
+                navigation
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+            >
+                {list.map((day, index) => (
+                    <SwiperSlide key={index}>
+                        <WeatherCard day={day} isDay={isDay} />
+                    </SwiperSlide>
                 ))}
-            </div>
-            <button
-                style={{ ...buttonStyle, left: "5px" }}
-                onClick={leftButtonHandler}
-            >
-                {"<"}
-            </button>
-            <button
-                style={{ ...buttonStyle, right: "5px" }}
-                onClick={rightButtonHandler}
-            >
-                {">"}
-            </button>
+            </Swiper>
         </div>
     );
 }

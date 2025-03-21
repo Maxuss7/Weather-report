@@ -11,13 +11,13 @@ const headerStyle = {
     top: "0",
     left: "0",
     width: "100%",
-    zIndex: "1",
+    zIndex: "3",
 };
 
 export default function AppHeader() {
     return (
         <header style={headerStyle}>
-            <div style={{ fontSize: "2rem" }}>Weather App</div>
+            <div style={{ fontSize: "1.5rem" }}>Weather App</div>
             <div>
                 <SearchLocation />
             </div>
