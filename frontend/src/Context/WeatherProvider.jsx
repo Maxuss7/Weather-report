@@ -84,14 +84,14 @@ export default function WeatherContextProvider({ children }) {
 
     async function getCurrentWeather(city) {
         const response = await fetch(
-            `http://localhost:8000/api/weather?city=${city}`
+            `/api/weather?city=${city}`
         ).then((resp) => resp.json());
         return response;
     }
 
     async function getForecast24h(city) {
         const response = await fetch(
-            `http://localhost:8000/api/get_24_hours_forecast?city=${city}`
+            `/api/get_24_hours_forecast?city=${city}`
         ).then((resp) => resp.json());
 
         return response;
@@ -99,7 +99,7 @@ export default function WeatherContextProvider({ children }) {
 
     async function getForecast5d(city) {
         const response = await fetch(
-            `http://localhost:8000/api/get_5_days_forecast?city=${city}`
+            `/api/get_5_days_forecast?city=${city}`
         ).then((resp) => resp.json());
 
         return response;

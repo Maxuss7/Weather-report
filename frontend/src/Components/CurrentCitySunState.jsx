@@ -28,7 +28,7 @@ export default function CurrentCitySunState() {
                         <p>{validTime(weather.weather.sys.sunrise)}</p>
                         <img
                             className="sun"
-                            src="../../img/sunrise.png"
+                            src="../../img/sunrise.webp"
                             alt="sun"
                             style={sunStyle}
                         ></img>
@@ -45,7 +45,7 @@ export default function CurrentCitySunState() {
                         <p>{validTime(weather.weather.sys.sunset)}</p>
                         <img
                             className="sun"
-                            src="../../img/sunset.png"
+                            src="../../img/sunset.webp"
                             alt="sun"
                             style={sunStyle}
                         ></img>
